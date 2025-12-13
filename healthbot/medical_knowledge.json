@@ -1,0 +1,211 @@
+{
+  "symptoms": {
+    "fever": {
+      "description": "Elevated body temperature above normal (98.6\u00b0F/37\u00b0C)",
+      "possible_causes": [
+        "Infection",
+        "Inflammation",
+        "Autoimmune disorders",
+        "Medication reaction"
+      ],
+      "first_aid": [
+        "Rest",
+        "Hydration",
+        "Cool compresses",
+        "Over-the-counter fever reducers"
+      ],
+      "when_to_see_doctor": "If fever is above 104\u00b0F (40\u00b0C), lasts more than 3 days, or is accompanied by severe symptoms"
+    },
+    "headache": {
+      "description": "Pain in head or neck region",
+      "types": [
+        "Tension",
+        "Migraine",
+        "Cluster",
+        "Sinus"
+      ],
+      "relief": [
+        "Rest in dark room",
+        "Hydration",
+        "Over-the-counter pain relief",
+        "Avoid triggers"
+      ],
+      "emergency_signs": "Sudden severe headache, headache after injury, with fever/stiff neck/confusion"
+    },
+    "cough": {
+      "description": "Reflex to clear throat and airways",
+      "types": [
+        "Dry",
+        "Productive",
+        "Acute",
+        "Chronic"
+      ],
+      "remedies": [
+        "Hydration",
+        "Honey",
+        "Steam inhalation",
+        "Humidifier"
+      ],
+      "warning_signs": "Coughing blood, difficulty breathing, chest pain, lasting more than 3 weeks"
+    },
+    "rash": {
+      "description": "Change in skin color or texture",
+      "possible_causes": [
+        "Allergies",
+        "Infections",
+        "Autoimmune conditions",
+        "Medications"
+      ],
+      "first_aid": [
+        "Avoid scratching",
+        "Cool compresses",
+        "Over-the-counter antihistamines"
+      ],
+      "when_to_see_doctor": "If rash is widespread, painful, or accompanied by fever or difficulty breathing"
+    },
+    "pain": {
+      "description": "Unpleasant sensory experience",
+      "types": [
+        "Acute",
+        "Chronic",
+        "Localized",
+        "Radiating"
+      ],
+      "management": [
+        "Rest",
+        "Over-the-counter pain relief",
+        "Heat/cold therapy"
+      ],
+      "emergency_signs": "Severe pain, chest pain, abdominal pain, pain after injury"
+    },
+    "fatigue": {
+      "description": "Extreme tiredness and lack of energy",
+      "possible_causes": [
+        "Anemia",
+        "Thyroid issues",
+        "Sleep disorders",
+        "Chronic conditions"
+      ],
+      "management": [
+        "Adequate sleep",
+        "Balanced diet",
+        "Regular exercise",
+        "Stress reduction"
+      ],
+      "when_to_see_doctor": "If persistent, severe, or accompanied by other symptoms"
+    }
+  },
+  "vaccinations": {
+    "covid_19": {
+      "types": [
+        "mRNA (Pfizer, Moderna)",
+        "Vector (Johnson & Johnson)",
+        "Protein subunit"
+      ],
+      "schedule": "Primary series + boosters as recommended",
+      "side_effects": [
+        "Pain at injection site",
+        "Fatigue",
+        "Headache",
+        "Fever"
+      ],
+      "effectiveness": "High effectiveness against severe disease"
+    },
+    "influenza": {
+      "recommendation": "Annual vaccination for everyone 6 months and older",
+      "types": [
+        "Standard dose",
+        "High dose (for seniors)",
+        "Egg-free"
+      ],
+      "best_time": "Fall, before flu season peaks"
+    },
+    "hepatitis_b": {
+      "schedule": "3-dose series (0, 1, and 6 months)",
+      "recommended_for": [
+        "Infants",
+        "Healthcare workers",
+        "People with chronic liver disease"
+      ],
+      "effectiveness": "Over 95% effective"
+    }
+  },
+  "diet_plans": {
+    "diabetes": {
+      "focus": "Blood sugar control",
+      "foods_to_eat": [
+        "Non-starchy vegetables",
+        "Lean proteins",
+        "Whole grains",
+        "Healthy fats"
+      ],
+      "foods_to_limit": [
+        "Sugary drinks",
+        "Refined carbs",
+        "Processed foods"
+      ],
+      "meal_timing": "Regular meals and snacks throughout day"
+    },
+    "heart_health": {
+      "focus": "Low cholesterol, low sodium",
+      "foods_to_eat": [
+        "Fruits and vegetables",
+        "Whole grains",
+        "Fish",
+        "Nuts"
+      ],
+      "foods_to_avoid": [
+        "Trans fats",
+        "High sodium foods",
+        "Red meat"
+      ],
+      "lifestyle": "Combine with regular exercise"
+    },
+    "weight_management": {
+      "principle": "Calorie balance",
+      "recommendations": [
+        "Portion control",
+        "High fiber foods",
+        "Lean proteins",
+        "Regular meals"
+      ],
+      "tips": [
+        "Stay hydrated",
+        "Mindful eating",
+        "Regular physical activity"
+      ]
+    },
+    "celiac_disease": {
+      "focus": "Gluten-free diet",
+      "foods_to_eat": [
+        "Naturally gluten-free grains (rice, quinoa)",
+        "Fresh fruits and vegetables",
+        "Lean meats"
+      ],
+      "foods_to_avoid": [
+        "Wheat, barley, rye",
+        "Processed foods with gluten",
+        "Beer and malt beverages"
+      ],
+      "important": "Read labels carefully and avoid cross-contamination"
+    }
+  },
+  "disease_prevention": {
+    "general": [
+      "Regular hand washing",
+      "Balanced diet rich in fruits and vegetables",
+      "Regular physical activity (30 minutes daily)",
+      "Adequate sleep (7-9 hours per night)",
+      "Stress management techniques",
+      "Regular health check-ups and screenings",
+      "Avoid smoking and limit alcohol",
+      "Maintain healthy weight"
+    ],
+    "specific": {
+      "diabetes": "Maintain healthy weight, exercise regularly, balanced diet with controlled carbohydrates",
+      "heart_disease": "No smoking, control blood pressure and cholesterol, healthy diet, regular exercise",
+      "cancer": "No tobacco, sun protection, healthy diet rich in antioxidants, regular screening",
+      "infections": "Vaccinations, good hygiene, safe food handling, avoid close contact with sick individuals"
+    }
+  }
+}

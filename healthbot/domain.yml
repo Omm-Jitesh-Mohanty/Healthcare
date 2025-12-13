@@ -1,0 +1,121 @@
+version: '3.1'
+
+intents:
+  - greet
+  - goodbye
+  - medical_help
+  - symptom_fever
+  - symptom_headache
+  - symptom_cough
+  - symptom_pain
+  - symptom_rash
+  - symptom_dizziness
+  - ask_vaccine
+  - ask_covid_vaccine
+  - ask_flu_vaccine
+  - ask_hepatitis_vaccine
+  - ask_vaccine_safety
+  - ask_diet
+  - ask_diabetes_diet
+  - ask_heart_diet
+  - ask_gluten_free
+  - ask_diet_weight
+  - ask_prevention
+  - ask_medication
+  - emergency
+  - emergency_breathing
+  - emergency_chest_pain
+
+responses:
+  utter_greet:
+  - text: "Hello! I am your comprehensive medical assistant. 🤖 I can help with symptom information, vaccine details, diet advice, disease prevention, and general health questions. How can I assist you today?"
+
+  utter_goodbye:
+  - text: "Thank you for consulting with me! Remember, I provide general health information only. Always consult healthcare professionals for medical advice. Stay healthy! 👋"
+
+  utter_medical_help:
+  - text: "I can help you with general medical information. Please describe your symptoms or ask about specific health concerns. I can provide information about vaccines, diets, prevention, and common symptoms."
+
+  # Symptom Responses
+  utter_symptom_fever:
+  - text: "🌡️ **Fever Information:**\n\n• Rest well and stay hydrated\n• Monitor your temperature regularly\n• Use cool compresses if needed\n• Over-the-counter fever reducers can help\n\n🚨 **See a doctor if:**\n• Fever above 102°F (39°C)\n• Lasts more than 3 days\n• Accompanied by severe symptoms like rash, difficulty breathing, or confusion"
+
+  utter_symptom_headache:
+  - text: "🤕 **Headache Relief:**\n\n• Rest in a quiet, dark room\n• Stay hydrated\n• Avoid screen time and bright lights\n• Over-the-counter pain relief may help\n• Try relaxation techniques\n\n🚨 **Seek medical attention if:**\n• Sudden severe headache\n• Headache after injury\n• Accompanied by fever, stiff neck, or confusion\n• Vision changes or weakness"
+
+  utter_symptom_cough:
+  - text: "🤧 **Cough Management:**\n\n• Stay well hydrated\n• Try honey with warm water or tea\n• Use a humidifier\n• Avoid irritants like smoke\n• Get plenty of rest\n\n🚨 **Emergency signs:**\n• Difficulty breathing\n• Chest pain\n• Coughing up blood\n• High fever with cough"
+
+  utter_symptom_pain:
+  - text: "😣 **Pain Management:**\n\n• Rest the affected area\n• Use heat or cold therapy\n• Over-the-counter pain relief\n• Gentle stretching if appropriate\n\n🚨 **Seek immediate care for:**\n• Severe pain\n• Chest pain\n• Abdominal pain\n• Pain after injury\n• Pain with fever"
+
+  utter_symptom_rash:
+  - text: "🔍 **Rash After Medication** 🩹\n\n**Possible Causes**:\n• Antibiotic reaction\n• Drug allergy\n• Contact dermatitis\n• Viral rash\n\n**Immediate Steps**:\n• Stop the medication if advised by doctor\n• Avoid scratching\n• Use cool compresses\n• Over-the-counter antihistamines may help\n\n🚨 **Seek Medical Attention If**:\n• Rash spreads rapidly\n• Difficulty breathing\n• Swelling of face/lips\n• Blistering or peeling skin\n\n⚠️ *Always report medication reactions to your healthcare provider*"
+
+  utter_symptom_dizziness:
+  - text: "🔍 **Dizziness and Nausea** 🤢\n\n**Possible Causes**:\n• Inner ear problems\n• Dehydration\n• Low blood pressure\n• Medication side effects\n• Viral infection\n\n**Self-Care**:\n• Sit or lie down immediately\n• Stay hydrated\n• Avoid sudden movements\n• Rest in a quiet environment\n\n🚨 **Emergency Signs**:\n• Chest pain\n• Severe headache\n• Difficulty walking\n• Fainting\n• Neurological symptoms\n\n⚠️ *Persistent dizziness requires medical evaluation*"
+
+  # Vaccine Responses
+  utter_ask_vaccine:
+  - text: "💉 **Vaccine Information Center**\n\nI can provide detailed information about:\n• COVID-19 vaccines and boosters\n• Influenza (flu) vaccines\n• Hepatitis B vaccination\n• Routine immunizations\n• Travel vaccines\n\nWhich specific vaccine would you like to know about?"
+
+  utter_ask_covid_vaccine:
+  - text: "💉 **COVID-19 Vaccine Information** 🦠\n\n**Available Vaccines**:\n• mRNA vaccines (Pfizer, Moderna)\n• Protein subunit vaccines (Novavax)\n• Vector vaccines (Johnson & Johnson)\n\n**Common Side Effects**:\n• Pain at injection site\n• Fatigue\n• Headache\n• Muscle pain\n• Fever\n\n**Effectiveness**: High protection against severe disease, hospitalization, and death\n\n**Recommendation**: Stay up-to-date with boosters as recommended\n\n⚠️ *Consult healthcare providers for personalized vaccine advice.*"
+
+  utter_ask_flu_vaccine:
+  - text: "💉 **Influenza (Flu) Vaccine Information** 🤧\n\n**Annual Recommendation**: Everyone 6 months and older\n\n**Vaccine Types**:\n• Standard dose (most adults)\n• High dose (seniors 65+)\n• Egg-free options (allergy concerns)\n\n**Best Timing**: Fall, before flu season peaks\n\n**Benefits**: Reduces flu severity, prevents complications\n\n⚠️ *Get vaccinated annually for best protection*"
+
+  utter_ask_hepatitis_vaccine:
+  - text: "💉 **Hepatitis B Vaccine Information** 🩺\n\n**Schedule**: 3-dose series (0, 1, and 6 months)\n\n**Recommended For**:\n• All infants\n• Healthcare workers\n• People with chronic liver disease\n• Travelers to endemic areas\n\n**Effectiveness**: Over 95% with complete series\n\n**Protection**: Prevents liver infection and long-term complications\n\n⚠️ *Complete all doses for full protection*"
+
+  utter_ask_vaccine_safety:
+  - text: "💉 **Vaccine Safety Information** 🛡️\n\n**Extensive Testing**: Vaccines undergo rigorous safety testing before approval\n\n**Monitoring**: Continuous safety monitoring after approval\n\n**Children**: Vaccines are extensively tested for pediatric use\n\n**Common Side Effects**: Usually mild and temporary (pain, fever, fatigue)\n\n**Benefits vs Risks**: Protection far outweighs rare risks\n\n⚠️ *Discuss specific concerns with your pediatrician or healthcare provider*"
+
+  # Diet Responses
+  utter_ask_diet:
+  - text: "🥗 **Nutrition & Diet Guidance:**\n\nI can offer general dietary advice for:\n• Diabetes management\n• Heart health\n• Weight management\n• General healthy eating\n• Gluten-free diets\n\nKey principles:\n• Eat plenty of fruits and vegetables\n• Choose whole grains\n• Include lean proteins\n• Stay hydrated\n• Limit processed foods\n\n🍎 What specific dietary information are you looking for?"
+
+  utter_ask_diabetes_diet:
+  - text: "🥗 **Diabetes Diet Plan** 🩸\n\n**Key Principles**:\n• Balance carbohydrates throughout day\n• Choose high-fiber foods\n• Include lean proteins\n• Healthy fats in moderation\n\n**Foods to Emphasize**:\n• Non-starchy vegetables (broccoli, spinach)\n• Whole grains (oats, quinoa)\n• Lean proteins (chicken, fish, tofu)\n• Healthy fats (avocado, nuts)\n\n**Foods to Limit**:\n• Sugary drinks and sweets\n• Refined carbohydrates\n• High-sodium processed foods\n\n**Meal Timing**: Regular meals and snacks to maintain blood sugar\n\n⚠️ *Work with a dietitian for personalized meal planning*"
+
+  utter_ask_heart_diet:
+  - text: "🥗 **Heart-Healthy Diet** ❤️\n\n**Foods to Include**:\n• Fruits and vegetables (variety of colors)\n• Whole grains (oats, brown rice)\n• Fish (salmon, tuna) 2x/week\n• Nuts and seeds\n• Legumes (beans, lentils)\n\n**Foods to Limit**:\n• Trans fats (fried foods, baked goods)\n• High sodium foods\n• Red and processed meats\n• Sugary beverages\n\n**Cooking Methods**: Bake, broil, steam instead of frying\n\n**Portion Control**: Mindful eating to maintain healthy weight\n\n⚠️ *Combine with regular exercise for best heart health*"
+
+  utter_ask_gluten_free:
+  - text: "🥗 **Gluten-Free Diet Information** 🌾\n\n**For**: Celiac disease, gluten sensitivity, wheat allergy\n\n**Naturally Gluten-Free Foods**:\n• Fruits and vegetables\n• Meat, poultry, fish (unbreaded)\n• Rice, quinoa, corn\n• Potatoes, sweet potatoes\n• Legumes, nuts, seeds\n\n**Foods to Avoid**:\n• Wheat, barley, rye\n• Most breads, pasta, cereals\n• Beer and malt beverages\n• Many processed foods\n\n**Important**: Read labels carefully, watch for cross-contamination\n\n⚠️ *Consult dietitian for complete gluten-free guidance*"
+
+  utter_ask_diet_weight:
+  - text: "⚖️ **Weight Management Diet**\n\n**Healthy Weight Loss Strategies**:\n• Calorie control with nutrient-dense foods\n• Regular physical activity (150 mins/week)\n• Portion control and mindful eating\n• High protein intake for satiety\n• Limit sugar and processed foods\n\n**Key Principles**:\n• 1-2 lbs weight loss per week is safe\n• Combine cardio and strength training\n• Stay hydrated (8-10 glasses water/day)\n• Get adequate sleep (7-9 hours)\n\n💡 *Sustainable changes work better than quick fixes*"
+
+  utter_ask_prevention:
+  - text: "🛡️ **Disease Prevention Tips:**\n\n**General Prevention Strategies:**\n• Regular hand washing\n• Balanced nutrition\n• Regular exercise\n• Adequate sleep\n• Stress management\n• Regular health check-ups\n\n**Specific Prevention:**\n• Heart disease: No smoking, control BP, healthy diet\n• Diabetes: Maintain healthy weight, exercise\n• Cancer: No tobacco, sun protection, screenings\n• Infections: Vaccinations, good hygiene\n\n🌱 Prevention is always better than cure!"
+
+  utter_ask_medication:
+  - text: "💊 **Important Medication Notice:**\n\nI cannot prescribe medications or provide specific drug recommendations. Medication decisions should always be made by qualified healthcare professionals who can:\n\n• Consider your medical history\n• Assess potential interactions\n• Determine proper dosages\n• Monitor for side effects\n\nPlease consult with a doctor or pharmacist for medication advice."
+
+  utter_emergency:
+  - text: "🚨 **MEDICAL EMERGENCY ALERT** 🚨\n\nIf you are experiencing a medical emergency:\n\n• Call emergency services immediately (911/112/your local emergency number)\n• Go to the nearest hospital emergency department\n• Do not delay seeking medical attention\n\nCommon emergency signs:\n• Chest pain or pressure\n• Difficulty breathing\n• Severe bleeding\n• Sudden weakness or confusion\n• Seizures\n\nYour health and safety are the top priority! 🏥"
+
+  utter_emergency_breathing:
+  - text: "🚨 **BREATHING EMERGENCY** 🚨\n\n**IMMEDIATE ACTION REQUIRED**:\n\n📞 **Call Emergency Services NOW**:\n• Dial 911 or your local emergency number\n• Say \"difficulty breathing\"\n• Follow dispatcher instructions\n\n🏥 **Go to Hospital Immediately**:\n• Do not drive yourself\n• Have someone take you or call ambulance\n\n⚠️ **Do Not Wait**:\n• Breathing difficulties can quickly become life-threatening\n• Professional medical care is essential immediately\n\n**Help is available - act now!**"
+
+  utter_emergency_chest_pain:
+  - text: "🚨 **CHEST PAIN EMERGENCY** 🚨\n\n**POSSIBLE HEART ATTACK - ACT NOW**:\n\n📞 **Call Emergency Services IMMEDIATELY**:\n• Dial 911 or local emergency number\n• Describe chest pain and symptoms\n• Do not hang up until help arrives\n\n💊 **While Waiting**:\n• Sit or lie down\n• Loosen tight clothing\n• Do not eat or drink\n• Take prescribed heart medication if available\n\n🏥 **Hospital is ESSENTIAL**:\n• Do not drive yourself\n• Ambulance transport is safest\n\n**Every minute counts in heart emergencies!**"
+  # ADD THESE NEW RESPONSES to your domain.yml responses section
+
+  utter_ask_diet_general:
+  - text: "🥗 **General Healthy Eating Guide**\n\n**Balanced Diet Principles:**\n• Fill half your plate with fruits & vegetables\n• Choose whole grains over refined grains\n• Include lean proteins (chicken, fish, beans, tofu)\n• Incorporate healthy fats (avocado, nuts, olive oil)\n• Limit processed foods and added sugars\n• Stay hydrated with water throughout the day\n\n**Daily Goals:**\n• 5+ servings of fruits/vegetables (variety of colors)\n• 3-4 servings of whole grains\n• 2-3 servings of lean protein\n• 2-3 servings of dairy or alternatives\n• Healthy fats in moderation\n\n**Meal Timing:**\n• Regular meals and healthy snacks\n• Don't skip breakfast\n• Mindful eating practices\n• Listen to hunger/fullness cues"
+
+  utter_ask_diet_meal_plans:
+  - text: "📅 **Sample Healthy Meal Plan**\n\n**Breakfast Options:**\n• Oatmeal with berries and nuts\n• Whole grain toast with avocado and eggs\n• Greek yogurt with fruit and honey\n• Smoothie with spinach, banana, and protein\n\n**Lunch Options:**\n• Grilled chicken salad with mixed greens\n• Quinoa bowl with roasted vegetables\n• Whole grain wrap with hummus and veggies\n• Lentil soup with whole grain bread\n\n**Dinner Options:**\n• Baked salmon with sweet potato and broccoli\n• Stir-fried tofu with brown rice and vegetables\n• Lean beef with quinoa and asparagus\n• Chicken and vegetable skewers\n\n**Healthy Snacks:**\n• Apple slices with peanut butter\n• Carrot sticks with hummus\n• Handful of nuts and seeds\n• Greek yogurt with berries"
+
+  utter_ask_diet_conditions:
+  - text: "🏥 **Diet for Specific Health Conditions**\n\nI can provide dietary guidance for:\n\n**Heart Conditions:**\n• Low sodium, low saturated fat\n• High fiber, omega-3 fatty acids\n• DASH diet principles\n\n**Diabetes:**\n• Carbohydrate counting\n• Glycemic index awareness\n• Regular meal timing\n\n**Digestive Issues:**\n• High fiber for constipation\n• Low FODMAP for IBS\n• Gluten-free for celiac\n\n**Kidney Disease:**\n• Protein and potassium control\n• Phosphorus management\n• Fluid balance\n\n**Please specify which condition you're interested in for detailed guidance.**"
+  # ADD THIS NEW RESPONSE to your domain.yml responses section
+
+  utter_ask_fever_prevention:
+  - text: "🛡️ **Fever Prevention Strategies**\n\n**General Prevention:**\n• Practice good hand hygiene regularly\n• Avoid close contact with sick individuals\n• Maintain a strong immune system through balanced nutrition\n• Stay hydrated throughout the day\n• Get adequate rest and sleep\n• Manage stress levels effectively\n\n**Infection Prevention:**\n• Keep up with recommended vaccinations\n• Practice food safety and proper cooking\n• Avoid sharing personal items when sick\n• Clean and disinfect frequently touched surfaces\n• Follow respiratory etiquette (cover coughs/sneezes)\n\n**Immune Support:**\n• Eat a variety of fruits and vegetables\n• Include immune-supporting nutrients (Vitamin C, Zinc)\n• Engage in regular moderate exercise\n• Maintain healthy gut microbiome\n• Avoid smoking and limit alcohol\n\n💡 *While fever itself isn't always preventable, these strategies reduce your risk of infections that commonly cause fever.*"
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
