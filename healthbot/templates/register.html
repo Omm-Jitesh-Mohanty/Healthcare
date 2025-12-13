@@ -1,0 +1,229 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - HealthBot AI Assistant</title>
+    <meta name="description" content="Create your HealthBot AI Assistant account for personalized healthcare support">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animation.css' %}">
+</head>
+
+<body class="auth-page">
+    <!-- Navigation Back Button -->
+    <nav class="auth-nav">
+        <a href="{% url 'home' %}" class="back-to-home">
+            <i class="fas fa-arrow-left"></i>
+            Back to Home
+        </a>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>HealthBot</span>
+                </div>
+                <h1 class="auth-title">Create Your Account</h1>
+                <p class="auth-subtitle">Join our health community and get personalized healthcare support</p>
+            </div>
+
+            <!-- Django Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% else %}check-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Django Form Errors -->
+            {% if form.errors %}
+                <div class="alert alert-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Please correct the errors below.
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="form-error">{{ error }}</div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="form-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="POST" class="auth-form" id="registration-form">
+                {% csrf_token %}
+                
+                <!-- Personal Information Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user"></i> Personal Information</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="id_first_name" class="form-label">First Name *</label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <div class="form-error">{{ form.first_name.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_last_name" class="form-label">Last Name *</label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <div class="form-error">{{ form.last_name.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_username" class="form-label">Username *</label>
+                        {{ form.username }}
+                        <small class="form-hint">3-150 characters. Letters, digits and @/./+/-/_ only.</small>
+                        {% if form.username.errors %}
+                            <div class="form-error">{{ form.username.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_email" class="form-label">Email Address *</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <div class="form-error">{{ form.email.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Health Information Section -->
+                <div class="health-info-section">
+                    <h3><i class="fas fa-heartbeat"></i> Health Information (Optional)</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="id_age" class="form-label">Age</label>
+                            {{ form.age }}
+                            {% if form.age.errors %}
+                                <div class="form-error">{{ form.age.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_phone" class="form-label">Phone Number</label>
+                            {{ form.phone }}
+                            <small class="form-hint">Include country code for proper contact</small>
+                            {% if form.phone.errors %}
+                                <div class="form-error">{{ form.phone.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_health_condition" class="form-label">Health Condition (if any)</label>
+                        {{ form.health_condition }}
+                        {% if form.health_condition.errors %}
+                            <div class="form-error">{{ form.health_condition.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_medications" class="form-label">Current Medications</label>
+                        {{ form.medications }}
+                        {% if form.medications.errors %}
+                            <div class="form-error">{{ form.medications.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Security Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-lock"></i> Security</h3>
+                    
+                    <div class="form-group">
+                        <label for="id_password1" class="form-label">Password *</label>
+                        <div class="input-with-icon">
+                            {{ form.password1 }}
+                            <button type="button" class="password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength">
+                            <div class="strength-bar">
+                                <div class="strength-fill strength-weak"></div>
+                            </div>
+                            <div class="strength-text">Enter a password</div>
+                        </div>
+                        <small class="form-hint">Minimum 8 characters with letters, numbers, and symbols</small>
+                        {% if form.password1.errors %}
+                            <div class="form-error">{{ form.password1.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_password2" class="form-label">Confirm Password *</label>
+                        <div class="input-with-icon">
+                            {{ form.password2 }}
+                            <button type="button" class="password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        {% if form.password2.errors %}
+                            <div class="form-error">{{ form.password2.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Terms and Conditions -->
+                <div class="terms-agreement">
+                    <div class="terms-checkbox">
+                        {{ form.terms }}
+                        <label for="id_terms">
+                            I agree to the <a href="#" target="_blank">Terms of Service</a> and 
+                            <a href="#" target="_blank">Privacy Policy</a>. I consent to the collection 
+                            and use of my health data for healthcare purposes. *
+                        </label>
+                    </div>
+                    {% if form.terms.errors %}
+                        <div class="form-error">{{ form.terms.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="auth-btn">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+
+            <div class="auth-divider">
+                <span>Or continue with</span>
+            </div>
+
+            <div class="social-auth">
+                <a href="#" class="social-btn social-btn-google">
+                    <i class="fab fa-google"></i>
+                    Google
+                </a>
+                <a href="#" class="social-btn social-btn-facebook">
+                    <i class="fab fa-facebook-f"></i>
+                    Facebook
+                </a>
+            </div>
+
+            <div class="auth-links">
+                <p>Already have an account? <a href="{% url 'login' %}" class="auth-link">Sign In <i class="fas fa-arrow-right"></i></a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/auth.js' %}"></script>
+</body>
+</html>

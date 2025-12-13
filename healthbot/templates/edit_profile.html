@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - Health Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .profile-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .profile-header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .profile-header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .profile-content {
+            padding: 40px;
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #4facfe;
+        }
+
+        .form-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        select.form-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-help {
+            font-size: 0.85em;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .error-list {
+            color: #dc3545;
+            font-size: 0.85em;
+            margin-top: 5px;
+            list-style: none;
+        }
+
+        .error-list li {
+            background: #f8d7da;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+
+        .form-input.error {
+            border-color: #dc3545;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .navigation {
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4facfe;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .nav-links a:hover {
+            background: #4facfe;
+            color: white;
+        }
+
+        .messages {
+            margin: 20px auto;
+            max-width: 1000px;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 5px solid;
+            background: white;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-left-color: #28a745;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left-color: #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .profile-content {
+                padding: 20px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-section {
+                padding: 20px;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="navigation">
+        <div class="nav-links">
+            <a href="{% url 'home' %}">🏠 Home</a>
+            <a href="{% url 'dashboard' %}">📊 Dashboard</a>
+            <a href="{% url 'profile' %}">👤 My Profile</a>
+            <a href="{% url 'profile_settings' %}">⚙️ Settings</a>
+            <a href="{% url 'logout' %}">🚪 Logout</a>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}error{% else %}success{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="profile-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <h1>Edit Profile</h1>
+            <p>Update your personal and health information</p>
+        </div>
+
+        <!-- Profile Form -->
+        <div class="profile-content">
+            <form method="post">
+                {% csrf_token %}
+                
+                <!-- User Information Section -->
+                <div class="form-section">
+                    <h2>📝 Basic Information</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="id_first_name">First Name</label>
+                            {{ user_form.first_name }}
+                            {% if user_form.first_name.errors %}
+                            <ul class="error-list">
+                                {% for error in user_form.first_name.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_last_name">Last Name</label>
+                            {{ user_form.last_name }}
+                            {% if user_form.last_name.errors %}
+                            <ul class="error-list">
+                                {% for error in user_form.last_name.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="id_email">Email Address</label>
+                            {{ user_form.email }}
+                            {% if user_form.email.errors %}
+                            <ul class="error-list">
+                                {% for error in user_form.email.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Information Section -->
+                <div class="form-section">
+                    <h2>👤 Personal Information</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="id_phone">Phone Number</label>
+                            {{ profile_form.phone }}
+                            <div class="form-help">Format: +91 9876543210</div>
+                            {% if profile_form.phone.errors %}
+                            <ul class="error-list">
+                                {% for error in profile_form.phone.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_date_of_birth">Date of Birth</label>
+                            {{ profile_form.date_of_birth }}
+                            {% if profile_form.date_of_birth.errors %}
+                            <ul class="error-list">
+                                {% for error in profile_form.date_of_birth.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_age">Age</label>
+                            {{ profile_form.age }}
+                            {% if profile_form.age.errors %}
+                            <ul class="error-list">
+                                {% for error in profile_form.age.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_gender">Gender</label>
+                            {{ profile_form.gender }}
+                            {% if profile_form.gender.errors %}
+                            <ul class="error-list">
+                                {% for error in profile_form.gender.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="id_address">Address</label>
+                            {{ profile_form.address }}
+                            {% if profile_form.address.errors %}
+                            <ul class="error-list">
+                                {% for error in profile_form.address.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Health Information Section -->
+                <div class="form-section">
+                    <h2>💊 Health Information</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="id_blood_group">Blood Group</label>
+                            {{ profile_form.blood_group }}
+                            <div class="form-help">e.g., A+, B-, O+</div>
+                            {% if profile_form.blood_group.errors %}
+                            <ul class="error-list">
+                                {% for error in profile_form.blood_group.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_health_condition">Health Condition</label>
+                            {{ profile_form.health_condition }}
+                            {% if profile_form.health_condition.errors %}
+                            <ul class="error-list">
+                                {% for error in profile_form.health_condition.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="id_medications">Current Medications</label>
+                            {{ profile_form.medications }}
+                            <div class="form-help">Separate medications with commas</div>
+                            {% if profile_form.medications.errors %}
+                            <ul class="error-list">
+                                {% for error in profile_form.medications.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="id_allergies">Allergies</label>
+                            {{ profile_form.allergies }}
+                            <div class="form-help">Separate allergies with commas</div>
+                            {% if profile_form.allergies.errors %}
+                            <ul class="error-list">
+                                {% for error in profile_form.allergies.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_emergency_contact">Emergency Contact</label>
+                            {{ profile_form.emergency_contact }}
+                            {% if profile_form.emergency_contact.errors %}
+                            <ul class="error-list">
+                                {% for error in profile_form.emergency_contact.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button type="submit" class="btn btn-primary">
+                        💾 Save Changes
+                    </button>
+                    <a href="{% url 'profile' %}" class="btn btn-secondary">
+                        ❌ Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add error class to form inputs with errors
+            const formInputs = document.querySelectorAll('.form-input');
+            formInputs.forEach(input => {
+                if (input.parentNode.querySelector('.error-list')) {
+                    input.classList.add('error');
+                }
+            });
+            
+            // Real-time age calculation based on date of birth
+            const dobInput = document.getElementById('id_date_of_birth');
+            const ageInput = document.getElementById('id_age');
+            
+            if (dobInput && ageInput) {
+                dobInput.addEventListener('change', function() {
+                    if (this.value) {
+                        const dob = new Date(this.value);
+                        const today = new Date();
+                        let age = today.getFullYear() - dob.getFullYear();
+                        const monthDiff = today.getMonth() - dob.getMonth();
+                        
+                        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                            age--;
+                        }
+                        
+                        if (age >= 1 && age <= 120) {
+                            ageInput.value = age;
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

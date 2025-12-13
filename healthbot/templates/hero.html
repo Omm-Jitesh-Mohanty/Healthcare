@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hero Run - Health Game</title>
+<style>
+body { margin:0; overflow:hidden; font-family:Comic Sans MS, Arial, sans-serif; background:#87CEEB; }
+canvas { display:block; background:#cceeff; }
+#ui { position:absolute; top:2%; left:2%; font-size:3vw; font-weight:bold; color:#333; text-shadow:1px 1px 2px #fff; }
+#banner { position:absolute; top:30%; width:100%; text-align:center; font-size:6vw; font-weight:bold; color:#fff; text-shadow:2px 2px 5px #000; display:none; }
+#tip { position:absolute; bottom:8%; width:100%; text-align:center; font-size:3vw; color:#333; display:none; background:rgba(255,255,255,0.8); padding:1vh 1vw; border-radius:8px; }
+#restartBtn { position:absolute; top:60%; left:50%; transform:translate(-50%,-50%); padding:1vh 2vw; font-size:3vw; background:#28a745; color:white; border:none; border-radius:8px; cursor:pointer; display:none; }
+#energyBarContainer { position:absolute; top:8%; right:2%; width:25vw; height:2vh; background:#ddd; border-radius:10px; overflow:hidden; border:2px solid #333; }
+#energyBar { height:100%; width:0%; background:linear-gradient(to right,#00ff00,#00cc66); transition:width 0.2s; }
+</style>
+</head>
+<body>
+<div id="ui">Score: 0 | High Score: 0</div>
+<div id="energyBarContainer"><div id="energyBar"></div></div>
+<div id="banner"></div>
+<div id="tip"></div>
+<button id="restartBtn">Restart</button>
+<canvas id="gameCanvas"></canvas>
+
+<script>
+const canvas=document.getElementById("gameCanvas");
+const ctx=canvas.getContext("2d");
+const ui=document.getElementById("ui");
+const banner=document.getElementById("banner");
+const tipBox=document.getElementById("tip");
+const restartBtn=document.getElementById("restartBtn");
+const energyBar=document.getElementById("energyBar");
+
+function resizeCanvas(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+window.addEventListener("resize",resizeCanvas);
+resizeCanvas();
+
+// Hero
+const hero={x:canvas.width*0.08,y:0,size:canvas.height*0.08,dy:0,grounded:true,shield:false,shieldTimer:0,emoji:"🦸",jumpsLeft:2};
+
+// Physics
+let gravity=canvas.height*0.0015;
+// Reduced jump power 1/4
+let jumpPower=-canvas.height*0.045*0.75;
+
+// Game variables
+let obstacles=[], foods=[], clouds=[];
+let frame=0, score=0, highScore=localStorage.getItem("heroHighScore")||0;
+let gameSpeed=canvas.width*0.005, gameOver=false, hearts=5;
+let energy=0,maxEnergy=100;
+
+// Food & obstacles
+const healthyFoods=[{emoji:"🍎",tip:"Apples give you vitamins!"},{emoji:"🥦",tip:"Broccoli makes you strong!"},{emoji:"🥛",tip:"Milk builds strong bones!"}];
+const junkFoods=[{emoji:"🍔",tip:"Too many burgers are unhealthy!"},{emoji:"🍟",tip:"Fries add unhealthy fat!"},{emoji:"🍩",tip:"Donuts have too much sugar!"}];
+const germs={emoji:"🦠",tip:"Germs make you sick!"};
+const bandage={emoji:"🩹",tip:"Bandage heals 1 heart!"};
+const shieldEmoji="🛡️";
+
+// Controls
+function jump(){
+    if(hero.grounded || hero.jumpsLeft>0){
+        hero.dy=jumpPower;
+        hero.grounded=false;
+        hero.jumpsLeft--;
+    }
+}
+document.addEventListener("keydown",e=>{ if((e.code==="Space"||e.code==="ArrowUp")&&!gameOver) jump(); if(e.code==="KeyR"&&gameOver) restartGame(); });
+document.addEventListener("mousedown",jump);
+document.addEventListener("touchstart",jump);
+
+// Spawn
+function spawnObstacle(){
+    const junk=junkFoods[Math.floor(Math.random()*junkFoods.length)];
+    obstacles.push({x:canvas.width+50,y:canvas.height*0.75,size:canvas.height*0.05,emoji:junk.emoji,tip:junk.tip});
+}
+function spawnFood(){
+    const chance=Math.random();
+    const y=canvas.height*0.75-Math.random()*canvas.height*0.15;
+    const x=canvas.width+50;
+    if(chance<0.5){
+        const healthy=healthyFoods[Math.floor(Math.random()*healthyFoods.length)];
+        foods.push({x:x,y:y,size:canvas.height*0.05,emoji:healthy.emoji,tip:healthy.tip,type:"healthy"});
+    } else if(chance<0.7){
+        foods.push({x:x,y:y,size:canvas.height*0.05,emoji:germs.emoji,tip:germs.tip,type:"germ"});
+    } else {
+        foods.push({x:x,y:y,size:canvas.height*0.05,emoji:bandage.emoji,tip:bandage.tip,type:"bandage"});
+    }
+}
+function spawnCloud(){
+    const x=canvas.width+50;
+    clouds.push({x:x,y:Math.random()*canvas.height*0.35+canvas.height*0.05,size:0.1*canvas.height+Math.random()*0.07*canvas.height,speed:canvas.width*0.002+Math.random()*canvas.width*0.002});
+}
+
+// Draw helpers
+function drawEmoji(e,x,y,s){ ctx.font=s+"px Arial"; ctx.fillText(e,x,y+s*0.8);}
+function drawHearts(){ ctx.font=`${0.025*canvas.height}px Arial`; for(let i=0;i<hearts;i++) ctx.fillText("❤️", canvas.width - 25*canvas.width/100 + i*0.035*canvas.width, canvas.height*0.06);}
+function updateEnergyBar(){ energyBar.style.width=(energy/maxEnergy*100)+"%"; }
+function showTip(msg){ tipBox.textContent=msg; tipBox.style.display="block"; setTimeout(()=>{tipBox.style.display="none";},2000);}
+function showBanner(msg){ banner.textContent=msg; banner.style.display="block"; setTimeout(()=>{banner.style.display="none";},1500);}
+function wrongFoodHit(tip){ hearts--; energy=0; updateEnergyBar(); showTip("Oops! "+tip); if(hearts<=0) endGame(); }
+function endGame(){ gameOver=true; banner.textContent="Game Over!"; banner.style.display="block"; restartBtn.style.display="block"; if(score>highScore){ highScore=score; localStorage.setItem("heroHighScore",highScore);} }
+function restartGame(){ obstacles=[]; foods=[]; clouds=[]; frame=0; score=0; gameSpeed=canvas.width*0.005; hero.y=canvas.height*0.75; hero.dy=0; hero.grounded=true; hero.shield=false; hearts=5; energy=0; hero.jumpsLeft=2; updateEnergyBar(); gameOver=false; banner.style.display="none"; restartBtn.style.display="none"; tipBox.style.display="none"; update(); }
+
+// Main update loop
+function update(){
+    if(gameOver) return;
+    frame++;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    // Background
+    ctx.fillStyle="#87CEEB"; ctx.fillRect(0,0,canvas.width,canvas.height);
+    clouds.forEach((c,i)=>{ c.x-=c.speed; drawEmoji("☁️",c.x,c.y,c.size); });
+    clouds=clouds.filter(c=>c.x+c.size>0);
+    if(frame%150===0) spawnCloud();
+    drawEmoji("☀️",canvas.width*0.88,canvas.height*0.1,canvas.height*0.15);
+
+    // Ground
+    ctx.fillStyle="#444"; ctx.fillRect(0,canvas.height*0.75+hero.size/2,canvas.width,canvas.height*0.1);
+
+    // Hero physics
+    hero.dy+=gravity; hero.y+=hero.dy;
+    if(hero.y>canvas.height*0.75){ hero.y=canvas.height*0.75; hero.dy=0; hero.grounded=true; hero.jumpsLeft=2; }
+    if(hero.y<hero.size) hero.y=hero.size;
+    if(hero.shield){ hero.shieldTimer--; if(hero.shieldTimer<=0) hero.shield=false; }
+
+    // Spawn obstacles & food
+    if(frame%140===0) spawnObstacle();
+    if(frame%100===0) spawnFood();
+
+    // Draw hero
+    drawEmoji(hero.emoji, hero.x, hero.y, hero.size);
+    if(hero.shield) drawEmoji(shieldEmoji, hero.x-0.03*canvas.width, hero.y-0.05*canvas.height, 0.08*canvas.height);
+
+    // Move obstacles
+    obstacles.forEach((ob,i)=>{
+        ob.x-=gameSpeed; drawEmoji(ob.emoji, ob.x, ob.y, ob.size);
+        if(hero.x<ob.x+ob.size && hero.x+hero.size>ob.x && hero.y<ob.y+ob.size && hero.y+hero.size>ob.y){ if(!hero.shield) wrongFoodHit(ob.tip); obstacles.splice(i,1); }
+    });
+    obstacles = obstacles.filter(ob=>ob.x+ob.size>0);
+
+    // Move foods
+    foods.forEach((f,i)=>{
+        f.x-=gameSpeed; drawEmoji(f.emoji, f.x, f.y, f.size);
+        if(hero.x<f.x+f.size && hero.x+hero.size>f.x && hero.y<f.y+f.size && hero.y+hero.size>f.y){
+            if(f.type==="healthy"){ score++; energy+=20; if(energy>maxEnergy) energy=maxEnergy; updateEnergyBar(); showTip("Yummy! "+f.tip);}
+            else if(f.type==="germ"){ if(!hero.shield) wrongFoodHit(f.tip);}
+            else if(f.type==="bandage"){ if(hearts<5){hearts++; showTip(f.tip);} }
+            foods.splice(i,1);
+        }
+    });
+    foods = foods.filter(f=>f.x+f.size>0);
+
+    // Energy
+    if(frame%60===0 && energy>0){ energy--; updateEnergyBar(); }
+
+    if(energy>=maxEnergy && !hero.shield){ hero.shield=true; hero.shieldTimer=600; energy=0; updateEnergyBar(); showBanner("Shield Activated 10s!"); }
+
+    if(score%20===0 && score!==0 && frame%60===0){ gameSpeed+=canvas.width*0.0005; showBanner("Level Up!"); }
+
+    ui.textContent=`Score: ${score} | High Score: ${highScore}`;
+    drawHearts();
+
+    requestAnimationFrame(update);
+}
+
+hero.y=canvas.height*0.75;
+showBanner("🦸 Be a Healthy Hero! Double Jump & Collect Healthy Food!");
+update();
+</script>
+</body>
+</html>

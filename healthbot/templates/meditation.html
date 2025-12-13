@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindful Moments - Meditation & Stress Relief</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        .app-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 480px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 32px 24px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="white" opacity="0.1"/><circle cx="80" cy="40" r="1" fill="white" opacity="0.15"/><circle cx="40" cy="80" r="1.5" fill="white" opacity="0.1"/></svg>');
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 300;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: 32px 24px;
+        }
+
+        .session-grid {
+            display: grid;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .session-card {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .session-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .session-card:hover::before {
+            opacity: 1;
+        }
+
+        .session-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: rgba(102, 126, 234, 0.2);
+        }
+
+        .session-card.active {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+
+        .session-info {
+            position: relative;
+            z-index: 1;
+        }
+
+        .session-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #334155;
+        }
+
+        .session-description {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .session-duration {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .player-section {
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .player-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .breathing-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .breathing-circle::before {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(0.8); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 0.9; }
+        }
+
+        .breathing-circle.paused::before {
+            animation-play-state: paused;
+        }
+
+        .current-session-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .timer-display {
+            font-size: 32px;
+            font-weight: 300;
+            color: #667eea;
+            margin-bottom: 24px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .controls {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .control-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-btn:hover {
+            background: #5a67d8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            background: rgba(102, 126, 234, 0.1);
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .instruction-text {
+            color: #64748b;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .back-btn {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .wellness-tip {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            border-left: 4px solid #667eea;
+        }
+
+        .wellness-tip h3 {
+            color: #334155;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .wellness-tip p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .audio-note {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 16px;
+            font-size: 13px;
+            color: #856404;
+            text-align: center;
+        }
+
+        @media (max-width: 480px) {
+            .app-container {
+                margin: 10px;
+                border-radius: 20px;
+            }
+            
+            .header {
+                padding: 24px 20px;
+            }
+            
+            .content {
+                padding: 24px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <h1>🧘‍♀️ Mindful Moments</h1>
+            <p>Find your calm in just a few minutes</p>
+        </div>
+
+        <div class="content">
+            <div id="session-selection">
+                <div class="session-grid">
+                    <div class="session-card" data-session="breathing">
+                        <div class="session-info">
+                            <div class="session-title">Deep Breathing</div>
+                            <div class="session-description">Simple 4-7-8 breathing technique to calm your nervous system and reduce stress instantly.</div>
+                            <div class="session-duration">⏱️ 3 minutes</div>
+                        </div>
+                    </div>
+
+                    <div class="session-card" data-session="mindfulness">
+                        <div class="session-info">
+                            <div class="session-title">Mindful Awareness</div>
+                            <div class="session-description">Ground yourself in the present moment with gentle body awareness and observation.</div>
+                            <div class="session-duration">⏱️ 5 minutes</div>
+                        </div>
+                    </div>
+
+                    <div class="session-card" data-session="stress-relief">
+                        <div class="session-info">
+                            <div class="session-title">Quick Stress Relief</div>
+                            <div class="session-description">Release tension with progressive muscle relaxation and calming visualizations.</div>
+                            <div class="session-duration">⏱️ 4 minutes</div>
+                        </div>
+                    </div>
+
+                    <div class="session-card" data-session="focus">
+                        <div class="session-info">
+                            <div class="session-title">Focus & Clarity</div>
+                            <div class="session-description">Enhance concentration and mental clarity with guided attention exercises.</div>
+                            <div class="session-duration">⏱️ 2 minutes</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wellness-tip">
+                    <h3>💡 Daily Wellness Tip</h3>
+                    <p>Regular meditation, even for just 2-5 minutes daily, can significantly reduce stress hormones, improve sleep quality, and enhance emotional regulation. Small consistent practices create lasting positive changes in your mental health.</p>
+                </div>
+            </div>
+
+            <div id="player-section" class="player-section">
+                <button class="back-btn" id="back-btn">← Back to Sessions</button>
+                
+                <div class="breathing-circle" id="breathing-circle"></div>
+                
+                <div class="current-session-title" id="session-title">Deep Breathing</div>
+                <div class="timer-display" id="timer">3:00</div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                
+                <div class="instruction-text" id="instruction-text">
+                    Click start when you're ready to begin your breathing exercise. Find a comfortable position and allow yourself to relax.
+                </div>
+                
+                <div class="controls">
+                    <button class="control-btn" id="start-btn">▶️ Start</button>
+                    <button class="control-btn" id="pause-btn" style="display: none;">⏸️ Pause</button>
+                    <button class="control-btn" id="reset-btn">🔄 Reset</button>
+                </div>
+
+                <div class="audio-note">
+                    🔊 This app provides guided text instructions. For the full experience with audio narration, consider using dedicated meditation apps or recordings.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class MeditationApp {
+            constructor() {
+                this.currentSession = null;
+                this.isPlaying = false;
+                this.isPaused = false;
+                this.timeRemaining = 0;
+                this.totalTime = 0;
+                this.timer = null;
+                this.currentInstructionIndex = 0;
+                
+                this.sessions = {
+                    breathing: {
+                        title: "Deep Breathing",
+                        duration: 180, // 3 minutes
+                        instructions: [
+                            "Welcome to your breathing session. Get comfortable and close your eyes if you'd like.",
+                            "We'll practice the 4-7-8 breathing technique. Inhale for 4 counts, hold for 7, exhale for 8.",
+                            "Place one hand on your chest, one on your belly. Breathe naturally for a moment.",
+                            "Now, inhale slowly through your nose for 4 counts... 1, 2, 3, 4.",
+                            "Hold your breath for 7 counts... 1, 2, 3, 4, 5, 6, 7.",
+                            "Exhale completely through your mouth for 8 counts... 1, 2, 3, 4, 5, 6, 7, 8.",
+                            "Great. Let's continue this pattern. Inhale for 4... Hold for 7... Exhale for 8.",
+                            "Notice how your body begins to relax with each breath cycle.",
+                            "Continue breathing at your own pace, maintaining the 4-7-8 rhythm.",
+                            "Feel the tension melting away from your shoulders and face.",
+                            "You're doing wonderfully. Keep focusing on your breath.",
+                            "Take a few more deep breaths, feeling completely relaxed.",
+                            "Slowly bring your attention back to the room. When ready, open your eyes."
+                        ]
+                    },
+                    mindfulness: {
+                        title: "Mindful Awareness",
+                        duration: 300, // 5 minutes
+                        instructions: [
+                            "Welcome to mindful awareness. Sit comfortably and breathe naturally.",
+                            "Begin by noticing your breath without trying to change it.",
+                            "Feel the sensations of breathing - air entering and leaving your nostrils.",
+                            "Now expand your awareness to your whole body. Notice where you feel tense or relaxed.",
+                            "Scan from the top of your head down to your toes, simply observing.",
+                            "If you notice tension, breathe into that area and let it soften.",
+                            "Bring attention to sounds around you. Don't judge them, just notice.",
+                            "Return to your breath as your anchor point.",
+                            "Notice any thoughts that arise. Acknowledge them and let them pass like clouds.",
+                            "Come back to the present moment through your senses.",
+                            "Feel your body supported by the chair or floor beneath you.",
+                            "Take in the feeling of being present, right here, right now.",
+                            "Continue to rest in this awareness for the remaining time.",
+                            "Gently wiggle your fingers and toes, bringing movement back to your body.",
+                            "When you're ready, slowly open your eyes and return to your day."
+                        ]
+                    },
+                    'stress-relief': {
+                        title: "Quick Stress Relief",
+                        duration: 240, // 4 minutes
+                        instructions: [
+                            "Let's release stress from your body and mind. Get comfortable and breathe deeply.",
+                            "Take three deep breaths, letting each exhale release tension.",
+                            "Now we'll do progressive muscle relaxation. Start by tensing your shoulders.",
+                            "Hold the tension for 5 seconds... and release. Feel the contrast.",
+                            "Tense your arms and hands into fists... hold... and release completely.",
+                            "Notice the feeling of relaxation spreading through your arms.",
+                            "Now tense your facial muscles, scrunch everything... and release.",
+                            "Let your face become completely soft and relaxed.",
+                            "Tense your leg muscles... hold tight... and let go completely.",
+                            "Imagine a wave of relaxation flowing from your head to your toes.",
+                            "Visualize your stress melting away like snow in warm sunshine.",
+                            "Breathe in calm, breathe out tension.",
+                            "Continue breathing peacefully, feeling completely at ease.",
+                            "Take a moment to appreciate this feeling of relaxation.",
+                            "When ready, slowly return to your day, carrying this calm with you."
+                        ]
+                    },
+                    focus: {
+                        title: "Focus & Clarity",
+                        duration: 120, // 2 minutes
+                        instructions: [
+                            "Welcome to your focus session. Sit tall and breathe steadily.",
+                            "We'll sharpen your mental clarity and concentration.",
+                            "Focus on a single point - your breath, a word, or an imaginary dot.",
+                            "When your mind wanders, gently bring it back to your chosen focus point.",
+                            "Count your breaths from 1 to 10, then start over at 1.",
+                            "If you lose count, simply start again at 1. This is normal.",
+                            "With each breath, feel your mind becoming clearer and more focused.",
+                            "Notice how returning to your focus point strengthens your concentration.",
+                            "Continue counting breaths, maintaining steady attention.",
+                            "Feel your mental clarity sharpening with each moment of focus.",
+                            "Your ability to concentrate is like a muscle getting stronger.",
+                            "Take a deep breath and appreciate your improved focus.",
+                            "Carry this clarity with you as you return to your activities."
+                        ]
+                    }
+                };
+                
+                this.initializeApp();
+            }
+            
+            initializeApp() {
+                this.bindEvents();
+            }
+            
+            bindEvents() {
+                // Session selection
+                document.querySelectorAll('.session-card').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        const sessionType = card.dataset.session;
+                        this.startSession(sessionType);
+                    });
+                });
+                
+                // Player controls
+                document.getElementById('start-btn').addEventListener('click', () => this.play());
+                document.getElementById('pause-btn').addEventListener('click', () => this.pause());
+                document.getElementById('reset-btn').addEventListener('click', () => this.reset());
+                document.getElementById('back-btn').addEventListener('click', () => this.backToSelection());
+            }
+            
+            startSession(sessionType) {
+                this.currentSession = this.sessions[sessionType];
+                this.timeRemaining = this.currentSession.duration;
+                this.totalTime = this.currentSession.duration;
+                this.currentInstructionIndex = 0;
+                
+                // Update UI
+                document.getElementById('session-selection').style.display = 'none';
+                document.getElementById('player-section').classList.add('active');
+                document.getElementById('session-title').textContent = this.currentSession.title;
+                document.getElementById('timer').textContent = this.formatTime(this.timeRemaining);
+                document.getElementById('instruction-text').textContent = this.currentSession.instructions[0];
+                
+                // Reset progress
+                document.getElementById('progress-fill').style.width = '0%';
+                
+                // Reset breathing animation
+                const breathingCircle = document.getElementById('breathing-circle');
+                breathingCircle.classList.remove('paused');
+            }
+            
+            play() {
+                if (!this.isPlaying) {
+                    this.isPlaying = true;
+                    this.isPaused = false;
+                    
+                    document.getElementById('start-btn').style.display = 'none';
+                    document.getElementById('pause-btn').style.display = 'inline-flex';
+                    
+                    this.startTimer();
+                    this.startInstructionTimer();
+                }
+            }
+            
+            pause() {
+                this.isPlaying = false;
+                this.isPaused = true;
+                
+                document.getElementById('start-btn').style.display = 'inline-flex';
+                document.getElementById('pause-btn').style.display = 'none';
+                document.getElementById('start-btn').innerHTML = '▶️ Resume';
+                
+                // Pause breathing animation
+                document.getElementById('breathing-circle').classList.add('paused');
+                
+                if (this.timer) {
+                    clearInterval(this.timer);
+                }
+                if (this.instructionTimer) {
+                    clearTimeout(this.instructionTimer);
+                }
+            }
+            
+            reset() {
+                this.isPlaying = false;
+                this.isPaused = false;
+                this.currentInstructionIndex = 0;
+                
+                if (this.currentSession) {
+                    this.timeRemaining = this.currentSession.duration;
+                    document.getElementById('timer').textContent = this.formatTime(this.timeRemaining);
+                    document.getElementById('instruction-text').textContent = this.currentSession.instructions[0];
+                }
+                
+                document.getElementById('start-btn').style.display = 'inline-flex';
+                document.getElementById('pause-btn').style.display = 'none';
+                document.getElementById('start-btn').innerHTML = '▶️ Start';
+                document.getElementById('progress-fill').style.width = '0%';
+                
+                // Reset breathing animation
+                const breathingCircle = document.getElementById('breathing-circle');
+                breathingCircle.classList.remove('paused');
+                
+                if (this.timer) {
+                    clearInterval(this.timer);
+                }
+                if (this.instructionTimer) {
+                    clearTimeout(this.instructionTimer);
+                }
+            }
+            
+            startTimer() {
+                this.timer = setInterval(() => {
+                    this.timeRemaining--;
+                    document.getElementById('timer').textContent = this.formatTime(this.timeRemaining);
+                    
+                    // Update progress bar
+                    const progress = ((this.totalTime - this.timeRemaining) / this.totalTime) * 100;
+                    document.getElementById('progress-fill').style.width = progress + '%';
+                    
+                    if (this.timeRemaining <= 0) {
+                        this.sessionComplete();
+                    }
+                }, 1000);
+            }
+            
+            startInstructionTimer() {
+                const instructionInterval = this.currentSession.duration / this.currentSession.instructions.length;
+                let timePerInstruction = instructionInterval * 1000; // Convert to milliseconds
+                
+                const showNextInstruction = () => {
+                    if (this.isPlaying && this.currentInstructionIndex < this.currentSession.instructions.length - 1) {
+                        this.currentInstructionIndex++;
+                        document.getElementById('instruction-text').textContent = 
+                            this.currentSession.instructions[this.currentInstructionIndex];
+                        
+                        this.instructionTimer = setTimeout(showNextInstruction, timePerInstruction);
+                    }
+                };
+                
+                this.instructionTimer = setTimeout(showNextInstruction, timePerInstruction);
+            }
+            
+            sessionComplete() {
+                this.isPlaying = false;
+                clearInterval(this.timer);
+                
+                document.getElementById('instruction-text').textContent = 
+                    "🎉 Session complete! Take a moment to notice how you feel. Great job taking care of your mental wellness.";
+                
+                document.getElementById('start-btn').style.display = 'inline-flex';
+                document.getElementById('pause-btn').style.display = 'none';
+                document.getElementById('start-btn').innerHTML = '▶️ Start';
+                
+                // Show completion message
+                setTimeout(() => {
+                    if (confirm("Session completed! Would you like to try another meditation?")) {
+                        this.backToSelection();
+                    }
+                }, 2000);
+            }
+            
+            backToSelection() {
+                this.reset();
+                document.getElementById('player-section').classList.remove('active');
+                document.getElementById('session-selection').style.display = 'block';
+                
+                // Remove active states from session cards
+                document.querySelectorAll('.session-card').forEach(card => {
+                    card.classList.remove('active');
+                });
+            }
+            
+            formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${minutes}:${secs.toString().padStart(2, '0')}`;
+            }
+        }
+        
+        // Initialize the app when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new MeditationApp();
+        });
+    </script>
+</body>
+</html>

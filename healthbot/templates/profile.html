@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Health Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .profile-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #4facfe;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .profile-header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .profile-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        .profile-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            border-left: 5px solid #4facfe;
+        }
+
+        .profile-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: between;
+            border-bottom: 1px solid #e9ecef;
+            padding: 10px 0;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #555;
+            min-width: 150px;
+        }
+
+        .info-value {
+            color: #333;
+            flex: 1;
+        }
+
+        .empty-value {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .action-buttons {
+            display: grid;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .health-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #4facfe;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #4facfe;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .messages {
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 5px solid;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-left-color: #28a745;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left-color: #dc3545;
+        }
+
+        .navigation {
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4facfe;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: #4facfe;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .profile-content {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .profile-header {
+                padding: 20px;
+            }
+            
+            .profile-header h1 {
+                font-size: 2em;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="navigation">
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'profile' %}">My Profile</a>
+            <a href="{% url 'profile_settings' %}">Settings</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}error{% else %}success{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="profile-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar">
+                {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+            </div>
+            <h1>{{ user.get_full_name|default:user.username }}</h1>
+            <p>Member since {{ user.date_joined|date:"F Y" }}</p>
+        </div>
+
+        <!-- Profile Content -->
+        <div class="profile-content">
+            <!-- Personal Information -->
+            <div class="profile-section">
+                <h2>Personal Information</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Username:</span>
+                        <span class="info-value">{{ user.username }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value">{{ user.email }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Full Name:</span>
+                        <span class="info-value">{{ user.get_full_name|default:"Not provided" }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Phone:</span>
+                        <span class="info-value {% if not profile.phone %}empty-value{% endif %}">
+                            {{ profile.phone|default:"Not provided" }}
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Date of Birth:</span>
+                        <span class="info-value {% if not profile.date_of_birth %}empty-value{% endif %}">
+                            {{ profile.date_of_birth|date:"F d, Y"|default:"Not provided" }}
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Age:</span>
+                        <span class="info-value {% if not profile.age %}empty-value{% endif %}">
+                            {{ profile.age|default:"Not provided" }}
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Gender:</span>
+                        <span class="info-value {% if not profile.gender %}empty-value{% endif %}">
+                            {{ profile.get_gender_display|default:"Not provided" }}
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Address:</span>
+                        <span class="info-value {% if not profile.address %}empty-value{% endif %}">
+                            {{ profile.address|default:"Not provided"|linebreaks }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Health Information -->
+            <div class="profile-section">
+                <h2>Health Information</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Blood Group:</span>
+                        <span class="info-value {% if not profile.blood_group %}empty-value{% endif %}">
+                            {{ profile.blood_group|default:"Not provided" }}
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Health Condition:</span>
+                        <span class="info-value {% if not profile.health_condition %}empty-value{% endif %}">
+                            {{ profile.get_health_condition_display|default:"Not provided" }}
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Medications:</span>
+                        <span class="info-value {% if not profile.medications %}empty-value{% endif %}">
+                            {{ profile.medications|default:"Not provided"|linebreaks }}
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Allergies:</span>
+                        <span class="info-value {% if not profile.allergies %}empty-value{% endif %}">
+                            {{ profile.allergies|default:"Not provided"|linebreaks }}
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Emergency Contact:</span>
+                        <span class="info-value {% if not profile.emergency_contact %}empty-value{% endif %}">
+                            {{ profile.emergency_contact|default:"Not provided" }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="profile-section">
+                <h2>Health Statistics</h2>
+                <div class="health-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">0</div>
+                        <div class="stat-label">Games Played</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">0</div>
+                        <div class="stat-label">Chat Messages</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">100</div>
+                        <div class="stat-label">Health Score</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Actions -->
+            <div class="profile-section">
+                <h2>Profile Management</h2>
+                <div class="action-buttons">
+                    <a href="{% url 'edit_profile' %}" class="btn btn-primary">
+                        ✏️ Edit Profile Information
+                    </a>
+                    <a href="{% url 'change_password' %}" class="btn btn-warning">
+                        🔒 Change Password
+                    </a>
+                    <a href="{% url 'profile_settings' %}" class="btn btn-secondary">
+                        ⚙️ Account Settings
+                    </a>
+                    <a href="{% url 'dashboard' %}" class="btn btn-primary">
+                        📊 Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add confirmation for sensitive actions
+            const dangerLinks = document.querySelectorAll('.btn-danger');
+            dangerLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (!confirm('Are you sure you want to perform this action? This cannot be undone.')) {
+                        e.preventDefault();
+                    }
+                });
+            });
+
+            // Add animation to stat cards
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.classList.add('animate-in');
+            });
+        });
+    </script>
+</body>
+</html>

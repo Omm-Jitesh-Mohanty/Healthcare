@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sort the Foods Challenge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Fredoka One', cursive;
+            background-color: #FEF3C7; /* A friendly, warm yellow */
+            touch-action: none; /* Prevents scrolling on mobile while dragging */
+        }
+        .food-bin {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            border: 4px dashed rgba(0,0,0,0.2);
+        }
+        .food-bin.drag-over {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            border-style: solid;
+        }
+        .food-item {
+            font-size: 5rem; /* Large, easy-to-drag emoji */
+            cursor: grab;
+            user-select: none; /* Prevents text selection while dragging */
+            transition: transform 0.2s ease;
+        }
+        .food-item:active {
+            cursor: grabbing;
+            transform: scale(1.2);
+        }
+        /* Feedback animation */
+        @keyframes pop-in {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .feedback-popup {
+            animation: pop-in 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4">
+
+    <div id="game-container" class="relative w-full max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl text-amber-700 mb-2 drop-shadow-lg">Sort the Foods!</h1>
+        <p class="text-lg text-amber-600 mb-4">Drag the food to the correct basket.</p>
+
+        <!-- Game UI: Score and Progress -->
+        <div class="flex justify-around items-center mb-6 text-xl bg-white/70 backdrop-blur-sm p-3 rounded-full shadow-md">
+            <div id="score-display" class="text-green-700 font-bold">Score: 0</div>
+            <div id="progress-display" class="text-blue-700 font-bold">Food: 1 / 15</div>
+        </div>
+        
+        <!-- Food Source Area -->
+        <div id="food-source-area" class="h-32 flex items-center justify-center bg-white/50 rounded-2xl shadow-inner mb-6">
+            <!-- Draggable food item appears here -->
+        </div>
+
+        <!-- Food Bins -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div id="fruits-veggies" data-category="fruits-veggies" class="food-bin bg-green-300 p-4 rounded-2xl">
+                <h2 class="text-xl md:text-2xl text-green-800">🍎 Fruits & Veggies 🥦</h2>
+            </div>
+            <div id="grains" data-category="grains" class="food-bin bg-yellow-300 p-4 rounded-2xl">
+                <h2 class="text-xl md:text-2xl text-yellow-800">🍞 Grains 🍚</h2>
+            </div>
+            <div id="protein" data-category="protein" class="food-bin bg-blue-300 p-4 rounded-2xl">
+                <h2 class="text-xl md:text-2xl text-blue-800">🍗 Protein 🍳</h2>
+            </div>
+            <div id="sometimes" data-category="sometimes" class="food-bin bg-red-300 p-4 rounded-2xl">
+                <h2 class="text-xl md:text-2xl text-red-800">🍩 Sometimes Foods 🍕</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlays -->
+    <div id="overlay" class="absolute inset-0 flex items-center justify-center bg-black/50">
+        <!-- Start Screen -->
+        <div id="start-screen" class="text-center text-white p-8 bg-amber-500/90 backdrop-blur-md rounded-xl shadow-2xl">
+            <h2 class="text-3xl md:text-4xl mb-4">Let's Learn About Food!</h2>
+            <p class="mb-6 md:text-lg">Can you sort all the foods into the right groups?</p>
+            <button id="start-button" class="bg-green-500 text-white text-2xl py-3 px-8 rounded-full hover:bg-green-600 transition-transform hover:scale-105">Start Game</button>
+        </div>
+        <!-- End Screen -->
+        <div id="end-screen" class="hidden text-center text-white p-8 bg-blue-500/90 backdrop-blur-md rounded-xl shadow-2xl">
+            <h2 class="text-3xl md:text-4xl mb-2">Great Job!</h2>
+            <p id="final-score" class="mb-6 md:text-lg text-2xl">Your score: 0</p>
+            <p class="mb-6">You're a nutrition expert!</p>
+            <button id="restart-button" class="bg-yellow-500 text-white text-2xl py-3 px-8 rounded-full hover:bg-yellow-600 transition-transform hover:scale-105">Play Again</button>
+        </div>
+    </div>
+
+    <!-- Feedback Popup -->
+    <div id="feedback-popup" class="hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-8 rounded-2xl text-white text-5xl font-bold drop-shadow-2xl"></div>
+
+    <!-- Tone.js for sounds -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <script>
+        // DOM Elements
+        const gameContainer = document.getElementById('game-container');
+        const scoreDisplay = document.getElementById('score-display');
+        const progressDisplay = document.getElementById('progress-display');
+        const foodSourceArea = document.getElementById('food-source-area');
+        const foodBins = document.querySelectorAll('.food-bin');
+        const overlay = document.getElementById('overlay');
+        const startScreen = document.getElementById('start-screen');
+        const endScreen = document.getElementById('end-screen');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const startButton = document.getElementById('start-button');
+        const restartButton = document.getElementById('restart-button');
+        const feedbackPopup = document.getElementById('feedback-popup');
+
+        // Game Data
+        const foods = [
+            { emoji: '🍎', category: 'fruits-veggies' }, { emoji: '🥕', category: 'fruits-veggies' }, { emoji: '🥦', category: 'fruits-veggies' },
+            { emoji: '🍞', category: 'grains' }, { emoji: '🍚', category: 'grains' }, { emoji: '🍝', category: 'grains' },
+            { emoji: '🍗', category: 'protein' }, { emoji: '🍳', category: 'protein' }, { emoji: '🥛', category: 'protein' },
+            { emoji: '🍩', category: 'sometimes' }, { emoji: '🍕', category: 'sometimes' }, { emoji: '🍟', category: 'sometimes' },
+            { emoji: '🍌', category: 'fruits-veggies' }, { emoji: '🧀', category: 'protein' }, { emoji: '🥨', category: 'grains' }
+        ];
+        let shuffledFoods = [];
+        let currentFoodIndex = 0;
+        let score = 0;
+
+        // Sound Synthesis
+        const synth = new Tone.Synth().toDestination();
+        const correctSound = () => synth.triggerAttackRelease("C5", "8n");
+        const wrongSound = () => synth.triggerAttackRelease("C3", "8n");
+
+        // Utility functions
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Game flow functions
+        function startGame() {
+            score = 0;
+            currentFoodIndex = 0;
+            shuffledFoods = [...foods];
+            shuffleArray(shuffledFoods);
+            updateUI();
+            displayNextFood();
+            overlay.classList.add('hidden');
+        }
+
+        function displayNextFood() {
+            foodSourceArea.innerHTML = '';
+            if (currentFoodIndex >= shuffledFoods.length) {
+                endGame();
+                return;
+            }
+            const food = shuffledFoods[currentFoodIndex];
+            const foodElement = document.createElement('div');
+            foodElement.textContent = food.emoji;
+            foodElement.id = 'current-food';
+            foodElement.className = 'food-item';
+            foodElement.draggable = true;
+            foodElement.dataset.category = food.category;
+            foodElement.addEventListener('dragstart', handleDragStart);
+            foodSourceArea.appendChild(foodElement);
+        }
+
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.id);
+            setTimeout(() => { e.target.classList.add('opacity-50'); }, 0);
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            this.classList.add('drag-over');
+        }
+        function handleDragLeave() {
+            this.classList.remove('drag-over');
+        }
+        function handleDrop(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+            const draggedElementId = e.dataTransfer.getData('text/plain');
+            const draggedElement = document.getElementById(draggedElementId);
+            if (!draggedElement) return;
+            const droppedCategory = this.dataset.category;
+            const correctCategory = draggedElement.dataset.category;
+            if (droppedCategory === correctCategory) {
+                score += 10;
+                showFeedback(true);
+                correctSound();
+            } else {
+                showFeedback(false);
+                wrongSound();
+            }
+            currentFoodIndex++;
+            updateUI();
+            displayNextFood();
+        }
+
+        function showFeedback(isCorrect) {
+            feedbackPopup.textContent = isCorrect ? 'Correct! ✅' : 'Oops! ❌';
+            feedbackPopup.className = `feedback-popup absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-8 rounded-2xl text-white text-5xl font-bold drop-shadow-2xl ${isCorrect ? 'bg-green-500' : 'bg-red-500'}`;
+            setTimeout(() => {
+                feedbackPopup.classList.add('hidden');
+            }, 800);
+        }
+
+        function updateUI() {
+            scoreDisplay.textContent = `Score: ${score}`;
+            progressDisplay.textContent = `Food: ${Math.min(currentFoodIndex + 1, shuffledFoods.length)} / ${shuffledFoods.length}`;
+        }
+
+        function endGame() {
+            finalScoreDisplay.textContent = `Your score: ${score}`;
+            endScreen.classList.remove('hidden');
+            overlay.classList.remove('hidden');
+        }
+
+        // Event Listeners
+        startButton.addEventListener('click', () => {
+            Tone.start(); // Resume audio context on user gesture
+            startScreen.classList.add('hidden');
+            startGame();
+        });
+
+        restartButton.addEventListener('click', () => {
+            endScreen.classList.add('hidden');
+            startGame();
+        });
+
+        foodBins.forEach(bin => {
+            bin.addEventListener('dragover', handleDragOver);
+            bin.addEventListener('dragleave', handleDragLeave);
+            bin.addEventListener('drop', handleDrop);
+        });
+    </script>
+</body>
+</html>

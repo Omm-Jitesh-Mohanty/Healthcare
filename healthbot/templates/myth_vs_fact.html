@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Myth vs. Fact Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #4C1D95; /* Deep purple background */
+            background-image: radial-gradient(circle at top right, #8B5CF6, #4C1D95);
+        }
+        .choice-button {
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        .choice-button:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.25);
+        }
+        .choice-button:active {
+            transform: translateY(1px);
+        }
+        #timer-bar-inner {
+            transition: width 0.1s linear;
+        }
+        /* Animation for the feedback modal */
+        @keyframes zoom-in {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .feedback-modal {
+            animation: zoom-in 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4 text-white">
+
+    <div id="game-container" class="relative w-full max-w-2xl mx-auto text-center">
+        <!-- Header UI -->
+        <div class="flex justify-between items-center mb-4 text-lg">
+            <div id="question-counter" class="bg-black/20 px-4 py-2 rounded-lg font-semibold">Question 1/10</div>
+            <div id="score-display" class="bg-black/20 px-4 py-2 rounded-lg font-semibold">Score: 0</div>
+        </div>
+        
+        <!-- Timer -->
+        <div id="timer-bar" class="w-full bg-black/20 rounded-full h-3 mb-6">
+            <div id="timer-bar-inner" class="bg-green-400 h-3 rounded-full" style="width: 100%;"></div>
+        </div>
+
+        <!-- Question Area -->
+        <div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-lg min-h-[150px] flex items-center justify-center">
+            <p id="question-text" class="text-2xl md:text-3xl font-bold"></p>
+        </div>
+        
+        <!-- Choice Buttons -->
+        <div class="grid grid-cols-2 gap-6 mt-8">
+            <button data-choice="myth" class="choice-button bg-red-500 hover:bg-red-600 p-6 rounded-2xl text-3xl font-bold">MYTH</button>
+            <button data-choice="fact" class="choice-button bg-blue-500 hover:bg-blue-600 p-6 rounded-2xl text-3xl font-bold">FACT</button>
+        </div>
+    </div>
+
+    <!-- Overlays -->
+    <div id="overlay" class="absolute inset-0 flex items-center justify-center bg-black/70 p-4">
+        <!-- Start Screen -->
+        <div id="start-screen" class="text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Health: Myth vs. Fact</h1>
+            <p class="text-lg text-gray-300 mb-8">Can you tell the difference? Test your knowledge!</p>
+            <button id="start-button" class="choice-button bg-emerald-500 hover:bg-emerald-600 text-white text-2xl py-4 px-10 rounded-full font-bold">Start Quiz</button>
+        </div>
+        
+        <!-- End Screen -->
+        <div id="end-screen" class="hidden text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-2">Quiz Complete!</h2>
+            <p id="final-score" class="text-2xl text-yellow-300 mb-6">Your final score: 0</p>
+            <button id="restart-button" class="choice-button bg-indigo-500 hover:bg-indigo-600 text-white text-xl py-3 px-8 rounded-full font-bold">Play Again</button>
+        </div>
+        
+        <!-- Feedback Modal -->
+        <div id="feedback-modal" class="hidden feedback-modal w-full max-w-md bg-gray-800 p-6 rounded-2xl shadow-2xl border border-gray-600">
+            <h2 id="feedback-title" class="text-3xl font-bold mb-3"></h2>
+            <p id="feedback-explanation" class="text-gray-300 mb-6"></p>
+            <button id="next-question-button" class="w-full choice-button bg-purple-600 hover:bg-purple-700 text-white text-xl py-3 rounded-lg font-bold">Next</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <script>
+        // --- DOM Elements ---
+        const gameContainer = document.getElementById('game-container');
+        const questionCounter = document.getElementById('question-counter');
+        const scoreDisplay = document.getElementById('score-display');
+        const timerBarInner = document.getElementById('timer-bar-inner');
+        const questionText = document.getElementById('question-text');
+        const choiceButtons = document.querySelectorAll('.choice-button[data-choice]');
+        
+        const overlay = document.getElementById('overlay');
+        const startScreen = document.getElementById('start-screen');
+        const endScreen = document.getElementById('end-screen');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const startButton = document.getElementById('start-button');
+        const restartButton = document.getElementById('restart-button');
+
+        const feedbackModal = document.getElementById('feedback-modal');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackExplanation = document.getElementById('feedback-explanation');
+        const nextQuestionButton = document.getElementById('next-question-button');
+
+        // --- Game Data ---
+        const quizQuestions = [
+            { question: "Cracking your knuckles causes arthritis.", isFact: false, explanation: "Myth! While it can be annoying, there's no scientific evidence linking knuckle-cracking to arthritis." },
+            { question: "Vaping is just harmless water vapor.", isFact: false, explanation: "Myth! Vapes contain nicotine, heavy metals, and other cancer-causing chemicals. It's highly addictive and harmful." },
+            { question: "Regular exercise can improve your mood and reduce feelings of anxiety.", isFact: true, explanation: "Fact! Physical activity releases endorphins, which are natural mood boosters. It's a powerful tool for managing mental health." },
+            { question: "You need to drink exactly 8 glasses of water a day.", isFact: false, explanation: "Myth! Water needs vary per person based on age, activity, and climate. The key is to stay hydrated, but the 8-glass rule is not universal." },
+            { question: "Getting less than 7 hours of sleep per night regularly can harm your health.", isFact: true, explanation: "Fact! Chronic sleep deprivation is linked to a higher risk of conditions like heart disease, diabetes, and a weakened immune system." },
+            { question: "Washing your hands is one of the best ways to prevent infections.", isFact: true, explanation: "Fact! Handwashing with soap and water effectively removes germs and prevents the spread of respiratory and diarrheal infections." },
+            { question: "Talking about mental health problems makes them worse.", isFact: false, explanation: "Myth! Sharing your feelings with someone you trust is a brave and important first step toward getting help and feeling better." },
+            { question: "A balanced diet is crucial for a strong immune system.", isFact: true, explanation: "Fact! Vitamins and minerals found in healthy foods are essential for producing and maintaining cells that fight off illness." },
+            { question: "'No pain, no gain' is the best way to exercise.", isFact: false, explanation: "Myth! You should feel muscle fatigue, but sharp pain is a sign of injury. Pushing through pain can be dangerous." },
+            { question: "Sunscreen is necessary even on cloudy days.", isFact: true, explanation: "Fact! Up to 80% of the sun's harmful UV rays can penetrate clouds, so it's important to protect your skin every day." }
+        ];
+
+        // --- Game State ---
+        let score = 0;
+        let currentQuestionIndex = 0;
+        let shuffledQuestions = [];
+        let timer;
+        const TIME_PER_QUESTION = 10000; // 10 seconds
+
+        // --- Sound Synthesis ---
+        const synth = new Tone.Synth().toDestination();
+        const correctSound = () => synth.triggerAttackRelease("C5", "8n", Tone.now());
+        const wrongSound = () => synth.triggerAttackRelease("A3", "8n", Tone.now());
+
+        // --- Functions ---
+        
+        function startGame() {
+            score = 0;
+            currentQuestionIndex = 0;
+            shuffledQuestions = [...quizQuestions].sort(() => Math.random() - 0.5);
+            
+            startScreen.style.display = 'none';
+            endScreen.classList.add('hidden');
+            gameContainer.style.display = 'block';
+            overlay.classList.add('hidden');
+
+            updateUI();
+            showNextQuestion();
+        }
+
+        function showNextQuestion() {
+            if (currentQuestionIndex >= shuffledQuestions.length) {
+                endGame();
+                return;
+            }
+            
+            feedbackModal.classList.add('hidden');
+            overlay.classList.add('hidden');
+            choiceButtons.forEach(b => b.disabled = false);
+
+            const question = shuffledQuestions[currentQuestionIndex];
+            questionText.textContent = question.question;
+            updateUI();
+            startTimer();
+        }
+        
+        function startTimer() {
+            let timeLeft = TIME_PER_QUESTION;
+            timerBarInner.style.transition = 'none';
+            timerBarInner.style.width = '100%';
+            
+            setTimeout(() => {
+                timerBarInner.style.transition = `width ${TIME_PER_QUESTION / 1000}s linear`;
+                timerBarInner.style.width = '0%';
+            }, 50);
+
+            timer = setTimeout(() => handleAnswer(null), TIME_PER_QUESTION);
+        }
+
+        function handleAnswer(userChoice) {
+            clearTimeout(timer);
+            choiceButtons.forEach(b => b.disabled = true);
+            const question = shuffledQuestions[currentQuestionIndex];
+            
+            let isCorrect = false;
+            if (userChoice !== null) {
+                const choiceIsFact = userChoice === 'fact';
+                isCorrect = choiceIsFact === question.isFact;
+            }
+
+            if (isCorrect) {
+                score += 10;
+                correctSound();
+                feedbackTitle.textContent = "Correct! ✅";
+                feedbackTitle.className = "text-3xl font-bold mb-3 text-green-400";
+            } else {
+                wrongSound();
+                feedbackTitle.textContent = userChoice === null ? "Time's Up! ⏰" : "Incorrect! ❌";
+                feedbackTitle.className = "text-3xl font-bold mb-3 text-red-400";
+            }
+
+            feedbackExplanation.textContent = question.explanation;
+            feedbackModal.classList.remove('hidden');
+            overlay.classList.remove('hidden');
+            startScreen.style.display = 'none';
+            endScreen.classList.add('hidden');
+        }
+
+        function advanceToNext() {
+            currentQuestionIndex++;
+            showNextQuestion();
+        }
+
+        function endGame() {
+            finalScoreDisplay.textContent = `Your final score: ${score}`;
+            gameContainer.style.display = 'none';
+            feedbackModal.classList.add('hidden');
+            endScreen.classList.remove('hidden');
+            overlay.classList.remove('hidden');
+        }
+        
+        function updateUI() {
+            scoreDisplay.textContent = `Score: ${score}`;
+            questionCounter.textContent = `Question ${currentQuestionIndex + 1}/${shuffledQuestions.length}`;
+        }
+
+        // --- Event Listeners ---
+        startButton.addEventListener('click', () => {
+            Tone.start();
+            startGame();
+        });
+
+        restartButton.addEventListener('click', startGame);
+
+        choiceButtons.forEach(button => {
+            button.addEventListener('click', () => handleAnswer(button.dataset.choice));
+        });
+
+        nextQuestionButton.addEventListener('click', advanceToNext);
+
+    </script>
+</body>
+</html>
+

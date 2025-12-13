@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>A Day in the Life</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #1a202c; /* A deep, modern blue-gray */
+            color: #E2E8F0;
+        }
+        .status-bar-bg { background-color: rgba(255, 255, 255, 0.1); }
+        .status-bar-fill { transition: width 0.5s ease-in-out; }
+        .choice-button {
+            transition: all 0.2s ease-in-out;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .choice-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+        #story-text-container p {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fade-in 0.6s ease-out forwards;
+        }
+        @keyframes fade-in {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div id="game-container" class="w-full max-w-2xl mx-auto hidden">
+        <!-- Status Meters -->
+        <div id="status-meters" class="grid grid-cols-3 gap-4 mb-6">
+            <div>
+                <span class="text-sm font-semibold">🔋 Energy</span>
+                <div class="status-bar-bg w-full rounded-full h-3 mt-1"><div id="energy-bar" class="status-bar-fill bg-green-400 h-3 rounded-full"></div></div>
+            </div>
+            <div>
+                <span class="text-sm font-semibold">🧠 Stress</span>
+                <div class="status-bar-bg w-full rounded-full h-3 mt-1"><div id="stress-bar" class="status-bar-fill bg-red-400 h-3 rounded-full"></div></div>
+            </div>
+            <div>
+                <span class="text-sm font-semibold">❤️ Health</span>
+                <div class="status-bar-bg w-full rounded-full h-3 mt-1"><div id="health-bar" class="status-bar-fill bg-blue-400 h-3 rounded-full"></div></div>
+            </div>
+        </div>
+
+        <!-- Story Area -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg min-h-[200px] flex flex-col justify-center mb-6">
+            <div id="story-text-container" class="text-lg leading-relaxed"></div>
+        </div>
+
+        <!-- Choices -->
+        <div id="choices-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Buttons are generated here -->
+        </div>
+    </div>
+
+    <!-- Overlays -->
+    <div id="overlay" class="absolute inset-0 flex items-center justify-center bg-black/80 p-4">
+        <!-- Start Screen -->
+        <div id="start-screen" class="text-center">
+            <h1 class="text-4xl font-bold mb-4">A Day in the Life</h1>
+            <p class="text-gray-400 mb-8 max-w-md">Guide Alex through a day of choices and see how they affect health, energy, and stress. Can you make it a good day?</p>
+            <button id="start-button" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg text-xl transition-transform duration-200 hover:scale-105">Begin the Day</button>
+        </div>
+        <!-- End Screen -->
+        <div id="end-screen" class="hidden text-center">
+             <h2 class="text-4xl font-bold mb-4">The Day is Over</h2>
+             <p id="end-message" class="text-gray-400 mb-8 max-w-md"></p>
+             <button id="restart-button" class="bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-8 rounded-lg text-xl transition-transform duration-200 hover:scale-105">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        // --- DOM Elements ---
+        const gameContainer = document.getElementById('game-container');
+        const energyBar = document.getElementById('energy-bar');
+        const stressBar = document.getElementById('stress-bar');
+        const healthBar = document.getElementById('health-bar');
+        const storyTextContainer = document.getElementById('story-text-container');
+        const choicesContainer = document.getElementById('choices-container');
+        const overlay = document.getElementById('overlay');
+        const startScreen = document.getElementById('start-screen');
+        const endScreen = document.getElementById('end-screen');
+        const startButton = document.getElementById('start-button');
+        const restartButton = document.getElementById('restart-button');
+        const endMessage = document.getElementById('end-message');
+
+        // --- Game State ---
+        let playerState = {};
+
+        // --- Story Data ---
+        const story = {
+            start: {
+                text: "The alarm blares. It's 7 AM on a Tuesday. The first decision of the day awaits: what's for breakfast?",
+                choices: [
+                    { text: "Sugary cereal. Quick and easy!", nextScene: "cereal", effect: { energy: -10, health: -5 } },
+                    { text: "Oatmeal with fruit. Takes time, but it's healthy.", nextScene: "oatmeal", effect: { energy: +15, health: +10 } }
+                ]
+            },
+            cereal: {
+                text: "The sugar rush is immediate, but by the time you're at school, you already feel a crash coming. At lunch, your friend offers you a puff from their vape.",
+                choices: [
+                    { text: "Try it. What's the harm?", nextScene: "vape", effect: { stress: +15, health: -20 } },
+                    { text: "Politely say no.", nextScene: "noVape", effect: { stress: -5 } }
+                ]
+            },
+            oatmeal: {
+                text: "You feel full and focused. Your energy is stable as you walk into school. At lunch, your friend offers you a puff from their vape.",
+                choices: [
+                    { text: "Try it. Just once.", nextScene: "vape", effect: { stress: +15, health: -20 } },
+                    { text: "Politely say no.", nextScene: "noVape", effect: { stress: -5 } }
+                ]
+            },
+            vape: {
+                text: "You feel dizzy and your chest feels tight. The guilt and anxiety make your stress levels spike. After school, a big exam is looming.",
+                choices: [
+                     { text: "Procrastinate by playing video games.", nextScene: "procrastinate", effect: { stress: +20, energy: -10 } },
+                     { text: "Create a study plan and start reviewing.", nextScene: "study", effect: { stress: -15, energy: -5 } }
+                ]
+            },
+             noVape: {
+                text: "Your friend shrugs and walks away. You feel confident in your decision. After school, you remember you have a big exam tomorrow.",
+                choices: [
+                     { text: "Procrastinate by playing video games.", nextScene: "procrastinate", effect: { stress: +20, energy: -10 } },
+                     { text: "Create a study plan and start reviewing.", nextScene: "study", effect: { stress: -15, energy: -5 } }
+                ]
+            },
+            procrastinate: {
+                text: "Hours fly by. The panic sets in late at night, and you know you're not prepared. You decide to stay up late scrolling on your phone to 'relax'.",
+                choices: [
+                    { text: "Scroll until 2 AM.", nextScene: "end", effect: { energy: -25, stress: +10, health: -5 } },
+                    { text: "Put the phone away at 10 PM.", nextScene: "end", effect: { energy: +10, stress: -10 } }
+                ]
+            },
+            study: {
+                text: "You feel a sense of accomplishment after a solid study session. You feel prepared. To wind down, you could scroll on your phone or read.",
+                choices: [
+                    { text: "Scroll social media for an hour.", nextScene: "end", effect: { energy: -10, stress: +5 } },
+                    { text: "Read a book for 30 minutes.", nextScene: "end", effect: { energy: +5, stress: -10, health: +5 } }
+                ]
+            },
+            end: { text: "The day ends.", isEnd: true }
+        };
+
+        function startGame() {
+            playerState = { energy: 50, stress: 20, health: 80 };
+            overlay.classList.add('hidden');
+            gameContainer.classList.remove('hidden');
+            renderScene('start');
+        }
+
+        function renderScene(sceneKey) {
+            const scene = story[sceneKey];
+
+            if (scene.isEnd) {
+                endGame();
+                return;
+            }
+
+            storyTextContainer.innerHTML = `<p>${scene.text}</p>`;
+            choicesContainer.innerHTML = '';
+
+            scene.choices.forEach(choice => {
+                const button = document.createElement('button');
+                button.textContent = choice.text;
+                button.className = 'choice-button w-full text-left p-4 rounded-lg';
+                button.onclick = () => {
+                    applyEffect(choice.effect);
+                    renderScene(choice.nextScene);
+                };
+                choicesContainer.appendChild(button);
+            });
+            updateMeters();
+        }
+
+        function applyEffect(effect) {
+            if (!effect) return;
+            playerState.energy = Math.max(0, Math.min(100, playerState.energy + (effect.energy || 0)));
+            playerState.stress = Math.max(0, Math.min(100, playerState.stress + (effect.stress || 0)));
+            playerState.health = Math.max(0, Math.min(100, playerState.health + (effect.health || 0)));
+        }
+
+        function updateMeters() {
+            energyBar.style.width = `${playerState.energy}%`;
+            stressBar.style.width = `${playerState.stress}%`;
+            healthBar.style.width = `${playerState.health}%`;
+        }
+
+        function endGame() {
+            gameContainer.classList.add('hidden');
+            overlay.classList.remove('hidden');
+            endScreen.classList.remove('hidden');
+            startScreen.classList.add('hidden');
+            
+            const totalScore = playerState.energy + playerState.health - playerState.stress;
+            if (totalScore > 120) {
+                endMessage.textContent = "Fantastic day! Your choices kept your energy high and stress low. You're building great habits for a healthy, happy life.";
+            } else if (totalScore > 60) {
+                endMessage.textContent = "A pretty good day. You navigated some tough choices well. Remember that even small, positive decisions add up to make a big difference.";
+            } else {
+                endMessage.textContent = "Today was a struggle. Some choices left you feeling drained and stressed. Don't worry, every day is a new chance to try again and prioritize your well-being.";
+            }
+        }
+
+        startButton.addEventListener('click', startGame);
+        restartButton.addEventListener('click', () => {
+             endScreen.classList.add('hidden');
+             startScreen.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
