@@ -1,0 +1,23 @@
+.\rasaenv\Scripts\activate
+
+django-admin startproject projectname
+
+python manage.py run server 
+
+To teain model : rasa train
+
+or: rasa train --force (for forcefully with handling errors )
+
+key: XX7V31NQJ3KGWJQN63QYAJ8D
+
+rasa run --enable-api --cors "*" --port 5005
+
+rasa run actions
+
+python manage.py runserver
+
+ngrok http 8000
+
+https://timberwolf-mastiff-9776.twil.io/demo-reply
+
+https://preeruptively-unmaudlin-dorris.ngrok-free.dev/whatsapp/webhook/
