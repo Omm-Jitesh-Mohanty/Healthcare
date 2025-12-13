@@ -1,0 +1,393 @@
+version: '3.1'
+nlu:
+- intent: greet
+  examples: |
+    - hello
+    - hi
+    - good morning
+    - hey there
+    - hello there
+    - hi there
+    - good afternoon
+    - good evening
+    - hey
+    - hi bot
+
+- intent: goodbye
+  examples: |
+    - goodbye
+    - bye
+    - see you
+    - thanks bye
+    - have a good day
+    - bye bye
+    - see you later
+    - take care
+    - goodbye for now
+    - catch you later
+
+- intent: medical_help
+  examples: |
+    - I need medical help
+    - Can you help me with health issues?
+    - I have a health problem
+    - I need medical advice
+    - Can you assist with medical questions?
+    - I need health information
+    - Medical consultation
+    - Health advice needed
+    - I need healthcare guidance
+
+- intent: symptom_fever
+  examples: |
+    - I have fever
+    - My temperature is high
+    - I feel hot and cold
+    - I have high fever
+    - My body is warm
+    - I think I have fever
+    - Feeling feverish
+    - Running temperature
+    - I have a temperature
+    - Feeling hot and feverish
+
+- intent: symptom_headache
+  examples: |
+    - I have headache
+    - My head is paining
+    - I have migraine
+    - Head is hurting
+    - I have severe headache
+    - My head aches
+    - Head pain
+    - Migraine attack
+    - My head is throbbing
+    - Headache won't go away
+
+- intent: symptom_cough
+  examples: |
+    - I am coughing
+    - I have cough
+    - Continuous coughing
+    - Dry cough
+    - Chest cough
+    - Persistent cough
+    - Coughing a lot
+    - Can't stop coughing
+    - Bad cough
+    - Cough for days
+
+- intent: symptom_pain
+  examples: |
+    - I have pain
+    - There is pain in my body
+    - I am feeling pain
+    - Severe pain
+    - Mild pain
+    - Body pain
+    - Aching all over
+    - Pain in my muscles
+    - General body ache
+    - Everything hurts
+
+- intent: symptom_rash
+  examples: |
+    - I have a rash after taking antibiotics
+    - rash from medication
+    - skin rash after medicine
+    - allergic rash
+    - itchy skin after antibiotics
+    - drug reaction rash
+    - skin irritation from drugs
+    - red spots after medicine
+    - allergic reaction rash
+
+- intent: symptom_dizziness
+  examples: |
+    - I feel dizzy and nauseous
+    - dizziness and nausea
+    - feeling dizzy
+    - vertigo and sick
+    - lightheaded and nauseated
+    - dizzy spells
+    - feeling lightheaded
+    - dizzy and vomiting
+    - unsteady and nauseous
+
+- intent: ask_vaccine
+  examples: |
+    - tell me about vaccines
+    - what vaccines do i need
+    - information about covid vaccine
+    - flu shot information
+    - vaccine side effects
+    - are vaccines safe
+    - when to get vaccinated
+    - vaccination schedule
+    - hepatitis b vaccine
+    - immunization information
+
+- intent: ask_covid_vaccine
+  examples: |
+    - tell me about covid vaccine
+    - covid vaccine information
+    - covid vaccine side effects
+    - coronavirus vaccine details
+    - information about covid vaccination
+    - covid shot details
+    - moderna pfizer vaccine
+    - mrna vaccine information
+    - covid booster information
+    - covid vaccine safety
+
+- intent: ask_flu_vaccine
+  examples: |
+    - tell me about flu shot
+    - influenza vaccine information
+    - flu vaccine details
+    - flu shot side effects
+    - seasonal flu vaccination
+    - influenza shot information
+    - flu vaccine safety
+    - annual flu shot
+    - flu immunization
+
+- intent: ask_hepatitis_vaccine
+  examples: |
+    - hepatitis b vaccination schedule
+    - hep b vaccine information
+    - hepatitis vaccine details
+    - hep b shot schedule
+    - hepatitis b immunization
+    - hep b vaccine timing
+    - hepatitis b shot information
+    - when to get hepatitis vaccine
+
+- intent: ask_vaccine_safety
+  examples: |
+    - are vaccines safe for children
+    - vaccine safety information
+    - are vaccines safe
+    - vaccine side effects
+    - immunization safety
+    - are vaccinations safe
+    - vaccine risks and benefits
+    - are vaccines dangerous
+    - vaccine safety for babies
+
+- intent: ask_diet
+  examples: |
+    - diet for diabetes
+    - healthy eating plan
+    - nutrition advice
+    - what to eat for heart health
+    - weight management diet
+    - balanced diet
+    - food for high blood pressure
+    - diabetic diet plan
+    - heart healthy foods
+    - nutrition guidance
+
+- intent: ask_diabetes_diet
+  examples: |
+    - diet plan for diabetes
+    - diabetes diet plan
+    - what to eat for diabetes
+    - diabetic diet
+    - food for blood sugar control
+    - diabetes nutrition plan
+    - meals for diabetics
+    - diabetes food choices
+    - diabetic meal planning
+
+- intent: ask_heart_diet
+  examples: |
+    - foods to avoid for heart health
+    - heart healthy diet
+    - diet for heart disease
+    - foods for cardiovascular health
+    - cholesterol diet
+    - heart diet plan
+    - foods good for heart
+    - cardiac diet
+    - low cholesterol foods
+
+- intent: ask_gluten_free
+  examples: |
+    - gluten free diet information
+    - celiac disease diet
+    - gluten free foods
+    - diet for gluten intolerance
+    - what to eat with celiac
+    - gluten free eating
+    - foods without gluten
+    - gluten free lifestyle
+    - celiac nutrition
+    - gluten free diet information
+    - celiac disease diet
+    - gluten free foods
+    - diet for gluten intolerance
+    - what to eat with celiac
+    - gluten free eating
+    - foods without gluten
+    - gluten free lifestyle
+    - celiac nutrition
+    - gluten free diet
+    - no gluten foods
+    - wheat free diet
+    - gluten sensitivity diet
+
+- intent: ask_diet_weight
+  examples: |
+    - weight management diet
+    - diet for weight loss
+    - weight loss food
+    - slimming diet
+    - reduce weight diet
+    - diet to lose weight
+    - weight control diet
+    - healthy weight diet
+    - diet for obesity
+    - weight reduction food
+    - weight management
+    - diet for weight loss
+    - weight loss food
+    - slimming diet
+    - reduce weight diet
+    - diet to lose weight
+    - weight control diet
+    - healthy weight diet
+    - diet for obesity
+    - weight reduction food
+    - losing weight diet
+    - diet for losing weight
+    - weight loss plan
+    - slimming food
+    - reduce weight food
+
+- intent: ask_prevention
+  examples: |
+    - how to prevent heart disease
+    - cancer prevention tips
+    - ways to stay healthy
+    - disease prevention methods
+    - how to avoid getting sick
+    - prevention of diabetes
+    - healthy lifestyle tips
+    - wellness practices
+    - illness prevention
+    - health maintenance
+    - how to prevent heart disease
+    - cancer prevention tips
+    - ways to stay healthy
+    - disease prevention methods
+    - how to avoid getting sick
+    - prevention of diabetes
+    - healthy lifestyle tips
+    - wellness practices
+    - illness prevention
+    - health maintenance
+    - prevent diseases
+    - avoid illnesses
+    - stay healthy tips
+    - health prevention
+    - disease avoidance
+
+- intent: ask_medication
+  examples: |
+    - what medicine should I take
+    - any medication for this
+    - do you recommend any drugs
+    - what pills should I take
+    - medical treatment
+    - prescription advice
+    - over the counter medicine
+    - drug recommendations
+    - what medication for symptoms
+
+- intent: emergency
+  examples: |
+    - It's an emergency
+    - I need emergency help
+    - This is urgent
+    - Critical condition
+    - Immediate help needed
+    - Medical emergency
+    - Help urgently
+    - Emergency situation
+    - Need help now
+    - Critical emergency
+
+- intent: emergency_breathing
+  examples: |
+    - help I can't breathe
+    - difficulty breathing
+    - can't catch my breath
+    - breathing problems
+    - shortness of breath emergency
+    - struggling to breathe
+    - breathing difficulty urgent
+    - can't breathe properly
+    - respiratory emergency
+
+- intent: emergency_chest_pain
+  examples: |
+    - emergency chest pain
+    - chest pain and tightness
+    - heart attack symptoms
+    - chest pressure emergency
+    - sharp chest pain
+    - chest pain urgent
+    - heart pain emergency
+    - chest discomfort emergency
+    - cardiac symptoms
+
+# ADD THESE NEW INTENTS to your existing nlu.yml
+
+- intent: ask_diet_general
+  examples: |
+    - general healthy eating
+    - healthy diet basics
+    - balanced diet
+    - what should I eat to be healthy
+    - general nutrition advice
+    - basic healthy foods
+    - what is a healthy diet
+    - normal healthy eating
+    - regular healthy diet
+    - standard healthy eating
+
+- intent: ask_diet_meal_plans
+  examples: |
+    - meal plans
+    - daily meal plan
+    - weekly meal schedule
+    - healthy meal ideas
+    - what to eat daily
+    - sample meal plan
+    - meal planning
+    - daily food schedule
+    - weekly food plan
+
+- intent: ask_diet_conditions
+  examples: |
+    - diet for conditions
+    - diet for health conditions
+    - eating for medical conditions
+    - food for specific diseases
+    - dietary needs for illnesses
+    - condition specific diet
+
+# ADD THIS NEW INTENT to your nlu.yml
+
+- intent: ask_fever_prevention
+  examples: |
+    - fever preventions
+    - how to prevent fever
+    - avoid fever
+    - stop fever from happening
+    - prevent high temperature
+    - ways to avoid fever
+    - fever prevention tips
+    - how not to get fever
+    - prevent getting fever

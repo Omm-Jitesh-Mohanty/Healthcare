@@ -1,0 +1,49 @@
+version: '3.1'
+rules:
+- rule: Greet user
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- rule: Say goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Emergency response
+  steps:
+  - intent: emergency
+  - action: utter_emergency
+
+- rule: Breathing emergency
+  steps:
+  - intent: emergency_breathing
+  - action: utter_emergency_breathing
+
+- rule: Chest pain emergency
+  steps:
+  - intent: emergency_chest_pain
+  - action: utter_emergency_chest_pain
+# ADD THESE NEW RULES to your rules.yml
+
+- rule: General diet response
+  steps:
+  - intent: ask_diet_general
+  - action: utter_ask_diet_general
+
+- rule: Meal plans response
+  steps:
+  - intent: ask_diet_meal_plans
+  - action: utter_ask_diet_meal_plans
+
+- rule: Diet for conditions response
+  steps:
+  - intent: ask_diet_conditions
+  - action: utter_ask_diet_conditions
+
+# ADD THIS NEW RULE to your rules.yml
+
+- rule: Fever prevention response
+  steps:
+  - intent: ask_fever_prevention
+  - action: utter_ask_fever_prevention

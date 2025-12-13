@@ -1,0 +1,160 @@
+version: '3.1'
+stories:
+- story: greet path
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- story: goodbye path
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: medical help conversation
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: medical_help
+  - action: utter_medical_help
+
+- story: fever symptoms
+  steps:
+  - intent: symptom_fever
+  - action: utter_symptom_fever
+
+- story: headache symptoms
+  steps:
+  - intent: symptom_headache
+  - action: utter_symptom_headache
+
+- story: cough symptoms
+  steps:
+  - intent: symptom_cough
+  - action: utter_symptom_cough
+
+- story: general pain
+  steps:
+  - intent: symptom_pain
+  - action: utter_symptom_pain
+
+- story: rash symptoms
+  steps:
+  - intent: symptom_rash
+  - action: utter_symptom_rash
+
+- story: dizziness symptoms
+  steps:
+  - intent: symptom_dizziness
+  - action: utter_symptom_dizziness
+
+- story: vaccine inquiry
+  steps:
+  - intent: ask_vaccine
+  - action: utter_ask_vaccine
+
+- story: covid vaccine inquiry
+  steps:
+  - intent: ask_covid_vaccine
+  - action: utter_ask_covid_vaccine
+
+- story: flu vaccine inquiry
+  steps:
+  - intent: ask_flu_vaccine
+  - action: utter_ask_flu_vaccine
+
+- story: hepatitis vaccine inquiry
+  steps:
+  - intent: ask_hepatitis_vaccine
+  - action: utter_ask_hepatitis_vaccine
+
+- story: vaccine safety question
+  steps:
+  - intent: ask_vaccine_safety
+  - action: utter_ask_vaccine_safety
+
+- story: diet advice
+  steps:
+  - intent: ask_diet
+  - action: utter_ask_diet
+
+- story: diabetes diet query
+  steps:
+  - intent: ask_diabetes_diet
+  - action: utter_ask_diabetes_diet
+
+- story: heart diet query
+  steps:
+  - intent: ask_heart_diet
+  - action: utter_ask_heart_diet
+
+- story: gluten free query
+  steps:
+  - intent: ask_gluten_free
+  - action: utter_ask_gluten_free
+
+- story: weight diet query
+  steps:
+  - intent: ask_diet_weight
+  - action: utter_ask_diet_weight
+
+- story: prevention info
+  steps:
+  - intent: ask_prevention
+  - action: utter_ask_prevention
+
+- story: medication query
+  steps:
+  - intent: ask_medication
+  - action: utter_ask_medication
+
+- story: emergency situation
+  steps:
+  - intent: emergency
+  - action: utter_emergency
+
+- story: breathing emergency
+  steps:
+  - intent: emergency_breathing
+  - action: utter_emergency_breathing
+
+- story: chest pain emergency
+  steps:
+  - intent: emergency_chest_pain
+  - action: utter_emergency_chest_pain
+# ADD THESE NEW STORIES to your stories.yml
+
+- story: general healthy eating query
+  steps:
+  - intent: ask_diet_general
+  - action: utter_ask_diet_general
+
+- story: meal plans query
+  steps:
+  - intent: ask_diet_meal_plans
+  - action: utter_ask_diet_meal_plans
+
+- story: diet for conditions query
+  steps:
+  - intent: ask_diet_conditions
+  - action: utter_ask_diet_conditions
+
+- story: diet conversation flow
+  steps:
+  - intent: ask_diet
+  - action: utter_ask_diet
+  - intent: ask_diet_general
+  - action: utter_ask_diet_general
+
+- story: weight management from general diet
+  steps:
+  - intent: ask_diet
+  - action: utter_ask_diet
+  - intent: ask_diet_weight
+  - action: utter_ask_diet_weight
+
+# ADD THIS NEW STORY to your stories.yml
+
+- story: fever prevention query
+  steps:
+  - intent: ask_fever_prevention
+  - action: utter_ask_fever_prevention
