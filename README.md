@@ -31,3 +31,75 @@ categories
 <li>Provides traceability to government against infectious disease and also about health conditions in their locality.</li>
 </ol>
 <b>In future we can add Agentic AI capabilities to it so that an Agent can develop which can do book vaccination slots , book doctor appointments etc.. </b>
+
+<h2>Tech stack:</h2>
+<ul>
+<li>Frontend: HTML, CSS , JS</li>
+<li>Backend: Python (Django)</li>
+<li>API:Twilio Api</li>
+<li>NLP: Rasa</li>
+<li>Database: dbSQLITE</li>
+</ul>
+
+<h2>Feasibility:</h2>
+<ul>
+<li>Technically feasible with NLP</li>
+<li>Easily accessible through WhatsApp/SMS</li>
+<li>Cost-effective to operate</li>
+<li>Ethically secure in collaboration with health authorities </li>
+</ul>
+
+<h2>Viability:</h2>
+<li>It is socially viable because most of the people in India use WhatsApp / SMS, so they can use it.</li>
+<li>It is free of cost so users don't need to worry . Only we need some investment for the server, deployment and data collection.</li>
+<li>It is easy to maintain i.edata can update easily in database and mode can be easily retrained.</li>
+<li>It is working 24 × 7.</li>
+<li>It is legal and it follows all government rules and policies.</li>
+
+<h2>Potential Challenges & Risks:</h2>
+<ul>
+<li>Misunderstanding due to misspelled words</li>
+<li>Updating information</li>
+<li>Trust & ethical concerns</li>
+</ul>
+
+<h2>Strategies for overcoming these challenges:</h2>
+<ul>
+<li>Increase model parameters</li>
+<li>Ensure data availability</li>
+<li>Collaboration & cooperation</li>
+</ul>
+
+<h2>Impact</h2>
+<ul>
+<li>Advanceawareness abouthealthcare.</li>
+<li>Takes care of personalhygiene.</li>
+<li>Every person can be connected with healthcare agents.</li>
+</ul>
+
+<h2>Benefits</h2>
+<ul>
+<li>Ensuring on time vaccinations and remainders.</li>
+<li>Maintaininggood hygiene.</li>
+<li>Public wellnessand vitality.</li>
+</ul>
+
+<h2>References:</h2>
+<h3>Existing platforms</h3>
+<ul><li>https://www.unicef.org/digitalimpact/disha-chatbot-digital-agents-comprehensiveprimary-health-care-india</li></ul>
+<h3>Open Government data platform India</h3>
+<ul><li>https://www.data.gov.in/apis/?sector=Health%20and%20Family%20welfare</li></ul>
+<h3>GitHub Links</h3>
+<ul>
+<li>https://github.com/topics/chatbot-rasa</li>
+<li>https://github.com/topics/rasa-chatbot?l=tex&o=desc&s=stars</li>
+<li>https://github.com/topics/health-care-chatbot?hl=en-GB</li>
+<li>https://github.com/LakshayGMZ/MediMate?hl=en-GB</li>
+</ul>
+<h3>Research works</h3>
+<ul><li>https://www.medrxiv.org/content/10.1101/2024.07.30.24311228v1.full</li></ul>
+<h3>Demo video</h3>
+<ul><li>https://youtube.com/shorts/nW12pHHz2WE?si=yv3D5WOsX0zbgGua</li></ul>
+<ul><li>https://www.medrxiv.org/content/10.1101/2024.07.30.24311228v1.full</li></ul>
+<h3>Demo video</h3>
+<ul><li>https://youtube.com/shorts/nW12pHHz2WE?si=yv3D5WOsX0zbgGua</li></ul>
