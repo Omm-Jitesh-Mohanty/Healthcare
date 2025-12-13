@@ -36,7 +36,7 @@ categories
 <ul>
 <li>Frontend: HTML, CSS , JS</li>
 <li>Backend: Python (Django)</li>
-<li>API:Twilio Api</li>
+<li>API:Twilio Api,Webhooks, REST Api</li>
 <li>NLP: Rasa</li>
 <li>Database: dbSQLITE</li>
 </ul>
