@@ -20,14 +20,14 @@ Built using NLP frameworks (e.g., Rasa, Dialogflow) with APIs for health data in
 <h2>Proposed Solution:</h2>
 <ul><li>We have designed an AI chatbot which has NLP capabilities and it is easily/freely accessible in our Website/WhatsApp/SMS</li></ul>
 • Our chatbot services are :-
-1. Multilingual conversation for all health-related queries
-2. Symptoms check and preventive tips
-3. Vaccination details and alert through WhatsApp/SMS
-4. Advanced seasonal healthcare alerts accordance with location
-5. Good nutrition and hygiene tips to all
-6. Interactive activity (like games , comics , videos etc )sessions for awareness to all
+<ol>
+<li>Multilingual conversation for all health-related queries</li>
+<li>Symptoms check and preventive tips</li>
+<li>Vaccination details and alert through WhatsApp/SMS</li>
+<li>Advanced seasonal healthcare alerts accordance with location</li>
+<li>Good nutrition and hygiene tips to all</li>
+<li>Interactive activity (like games , comics , videos etc )sessions for awareness to all</li>
 categories
-7. Provides traceability to government against infectious disease and also about health
-conditions in their locality.
-In future we can add Agentic AI capabilities to it so that an Agent can develop
-which can do book vaccination slots , book doctor appointments etc.. 
+<li>Provides traceability to government against infectious disease and also about health conditions in their locality.</li>
+</ol>
+<b>In future we can add Agentic AI capabilities to it so that an Agent can develop which can do book vaccination slots , book doctor appointments etc.. </b>
