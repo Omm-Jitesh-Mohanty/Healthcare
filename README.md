@@ -100,6 +100,11 @@ categories
 <ul><li>https://www.medrxiv.org/content/10.1101/2024.07.30.24311228v1.full</li></ul>
 <h3>Demo video</h3>
 <ul><li>https://youtube.com/shorts/nW12pHHz2WE?si=yv3D5WOsX0zbgGua</li></ul>
-<ul><li>https://www.medrxiv.org/content/10.1101/2024.07.30.24311228v1.full</li></ul>
-<h3>Demo video</h3>
-<ul><li>https://youtube.com/shorts/nW12pHHz2WE?si=yv3D5WOsX0zbgGua</li></ul>
+<h3> Dataset Links </h3>
+<ul>
+  <li>https://www.kaggle.com/datasets/artemminiailo/medicalconversations2disease</li>
+  <li>https://www.kaggle.com/datasets/saifulislamsarfaraz/medical-chatbot-dataset</li>
+  <li>https://www.kaggle.com/datasets/thedevastator/medical-conversation-corpus-100k</li>
+</ul>
+<h3>Google Drive Link </h3>
+<ul><li>https://drive.google.com/drive/folders/1ZF3SENLOxmZXl2t2FhjjMDLE0d98Qplv</li></ul>
