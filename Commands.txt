@@ -4,7 +4,7 @@ django-admin startproject projectname
 
 python manage.py run server 
 
-To teain model : rasa train
+To train model : rasa train
 
 or: rasa train --force (for forcefully with handling errors )
 
