@@ -8,7 +8,7 @@ To teain model : rasa train
 
 or: rasa train --force (for forcefully with handling errors )
 
-key: XX7V31NQJ3KGWJQN63QYAJ8D
+key: YOUR_API_KEY
 
 rasa run --enable-api --cors "*" --port 5005
 
